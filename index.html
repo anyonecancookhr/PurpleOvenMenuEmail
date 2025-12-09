@@ -768,113 +768,6 @@
             return html;
         }
 
-        /**
-         * Converts date and time strings into the required iCalendar (ICS) format (YYYYMMDDTHHMMSSZ).
-         */
-        function toICSDateTime(dateStr, timeStr) {
-            const date = new Date(dateStr);
-            if (isNaN(date)) {
-                return '';
-            }
-
-            let hour = 0;
-            const parts = timeStr.toUpperCase().split(' ');
-            if (parts.length === 2) {
-                const h = parseInt(parts[0], 10);
-                const ampm = parts[1];
-                
-                if (ampm === 'PM' && h !== 12) {
-                    hour = h + 12;
-                } else if (ampm === 'AM' && h === 12) {
-                    hour = 0; // 12 AM is 00:00
-                } else {
-                    hour = h;
-                }
-            } else {
-                 return '';
-            }
-
-            date.setHours(hour, 0, 0, 0); 
-
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            const hh = String(hour).padStart(2, '0');
-            
-            // Assuming the event is 1 hour long for the reminder duration
-            const endHour = String((hour + 1) % 24).padStart(2, '0');
-            
-            return {
-                start: `${year}${month}${day}T${hh}0000`,
-                end: `${year}${month}${day}T${endHour}0000`
-            };
-        }
-
-        /**
-         * Generates and downloads an ICS calendar file.
-         */
-        function downloadICS() {
-            const formData = state.lastSubmittedFormData;
-            if (!formData) {
-                console.error("No form data found for calendar generation.");
-                return;
-            }
-
-            const orderId = formData.get('orderId');
-            const orderDate = formData.get('orderDate');
-            const timeSlot = formData.get('timeSlot');
-            const orderType = formData.get('orderType');
-            const customerName = formData.get('customerName');
-            
-            let location = "";
-            let description = `Pickup/Delivery Time: ${timeSlot}. Check your email for confirmation and payment details.`;
-            let summary = `Purple Oven Order #${orderId}`;
-
-            if (orderType === 'Pick Up') {
-                location = formData.get('pickupLocation');
-                summary = `Purple Oven Pickup: Order #${orderId}`;
-            } else {
-                location = formData.get('deliveryAddress');
-                summary = `Purple Oven Delivery: Order #${orderId}`;
-            }
-            
-            description = `Customer: ${customerName}\nType: ${orderType}\nLocation: ${location}\n\n${description}`;
-
-            const dt = toICSDateTime(orderDate, timeSlot);
-
-            if (!dt.start) {
-                 alert("Could not generate calendar reminder due to invalid date/time selection.");
-                 return;
-            }
-
-            const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//PurpleOven//OrderReminder//EN
-CALSCALE:GREGORIAN
-BEGIN:VEVENT
-UID:${orderId}@purpleoven.com.ph
-DTSTAMP:${new Date().toISOString().replace(/[-:]|\\.\d{3}/g, '').substring(0, 15)}Z
-DTSTART:${dt.start}
-DTEND:${dt.end}
-SUMMARY:${summary}
-LOCATION:${location}
-DESCRIPTION:${description}
-END:VEVENT
-END:VCALENDAR`;
-
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const filename = `PurpleOven_Order_${orderId}.ics`;
-
-            // Create a temporary link element to trigger the download
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-
         function renderOrderForm() {
             APP_ROOT.classList.remove('justify-center');
             const themeClass = 'bg-purple-oven text-white';
@@ -937,7 +830,7 @@ END:VCALENDAR`;
                                     </div>
 
                                     <div class="option-box p-4">
-                                        <h4 class="font-bold text-purple-oven mb-2">Option 2: Email Order To Us</h4>
+                                        <h4 class="font-bold text-purple-oven mb-2">Option 2: Order Online</h4>
                                         <p class="text-sm text-gray-700">For orders tomorrow and onwards, please provide us with the details below. We will contact you to confirm the availability of your order before sending the bill.</p>
                                     </div>
                                 </div>
@@ -951,6 +844,10 @@ END:VCALENDAR`;
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                                         <input type="text" name="customerName" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                        <input type="email" name="customerEmail" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number * (Min. 8 digits)</label>
@@ -1061,32 +958,9 @@ END:VCALENDAR`;
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                     </svg>
                                 </div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">Order Sent Successfully!</h3>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Thank you!</h3>
                                 <p class="text-gray-600 mb-6">
-                                    Your order has been submitted to our team. We will review it and contact you shortly for confirmation and payment details.
-                                </p>
-                                
-                                <div class="bg-white border border-gray-200 rounded-lg p-4 mb-6 text-left">
-                                    <p class="font-semibold text-gray-800 text-sm mb-2">What happens next?</p>
-                                    <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">
-                                        <li>Our team receives your order.</li>
-                                        <li>We check item availability.</li>
-                                        <li>You receive a confirmation message/call with the final bill.</li>
-                                    </ol>
-                                </div>
-                                
-                                <!-- New Calendar Button -->
-                                <button type="button" onclick="downloadICS()"
-                                    class="w-full sm:w-auto px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-full shadow-md transform transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-4 flex items-center justify-center mx-auto">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    Add Reminder to Calendar
-                                </button>
-                                <!-- End New Calendar Button -->
-
-                                <p class="text-xs text-gray-500">
-                                    Note: Your order is <strong>not confirmed</strong> until you send the email and receive a reply from our team.
+                                    Your order has been submitted. Please expect a call from us before 6pm to confirm the availability of your order.
                                 </p>
                                 
                                 <button type="button" onclick="showLanding()" class="mt-8 text-purple-oven font-medium hover:underline text-sm">
@@ -1166,6 +1040,7 @@ END:VCALENDAR`;
             // --- 4. Prepare EmailJS Params ---
             const orderId = formData.get('orderId');
             const customerName = formData.get('customerName');
+            const customerEmail = formData.get('customerEmail');
             const contactNumber = formData.get('contactNumber');
             const orderDate = formData.get('orderDate');
             const timeSlot = formData.get('timeSlot');
@@ -1188,6 +1063,7 @@ END:VCALENDAR`;
 ---------------------------
 Order Reference: ${orderId}
 Customer Name: ${customerName}
+Customer Email: ${customerEmail}
 Contact Number: ${contactNumber}
 Date of Order: ${orderDate}
 Time: ${timeSlot}
@@ -1212,8 +1088,8 @@ Sent via Purple Oven Web App`;
                 message: bodyText,
                 // These standard fields can be mapped in your EmailJS template too
                 customer_name: customerName,
-                customer_email: "noreply@purpleoven.com.ph", // Or ask for their email
-                reply_to: "noreply@purpleoven.com.ph",
+                customer_email: customerEmail, 
+                reply_to: customerEmail,
                 order_id: orderId
             };
 
