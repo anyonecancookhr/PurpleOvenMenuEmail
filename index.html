@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purple Oven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- REQUIRED: EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        :root {
+            --purple-oven: #5D3FD3;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-content {
+            flex-grow: 1;
+        }
+        .text-purple-oven {
+            color: var(--purple-oven);
+        }
+        .bg-purple-oven {
+            background-color: var(--purple-oven);
+        }
+        /* Custom scrollbar */
+        .menu-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .menu-scroll::-webkit-scrollbar-thumb {
+            background-color: #e0e0e0;
+            border-radius: 4px;
+        }
+        /* Responsive form grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        @media (min-width: 640px) {
+            .form-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        /* Animations */
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .location-link {
+            transition: all 0.15s ease-in-out;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            display: inline-block;
+        }
+        .location-link:hover {
+            background-color: rgba(93, 63, 211, 0.1);
+        }
+        /* Collapsible icon styling */
+        details[open] .summary-icon {
+            transform: rotate(180deg);
+        }
+        .summary-icon {
+            transition: transform 0.3s ease;
+        }
+        .nested-summary {
+            padding-left: 0.75rem;
+        }
+        /* Custom Notice Box */
+        .notice-box {
+            background-color: #FAF5FF;
+            border: 1px solid #E9D5FF;
+            border-radius: 0.75rem;
+        }
+        .option-box {
+            background-color: #F3E8FF;
+            border-radius: 0.5rem;
+        }
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div id="app" class="main-content flex flex-col items-center p-4 sm:p-8">
+    </div>
+
+    <footer class="bg-gray-100 py-10 px-4 w-full border-t border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-10">
+                <!-- Left Side: Locations -->
+                <div class="md:w-2/3">
+                    <h3 class="text-xl font-bold mb-6 text-purple-oven flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Locations & Hours
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-sm">
+                        <div>
+                            <p class="font-bold text-gray-800 mb-2 border-b border-gray-300 pb-1">Metro Manila 8AM – 9PM</p>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="font-semibold text-purple-oven">Pasig</p>
+                                    <ul class="ml-2 space-y-1">
+                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Pasig" target="_blank" class="hover:underline">Portico</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-purple-oven">Makati</p>
+                                    <ul class="ml-2 space-y-1">
+                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+San+Antonio" target="_blank" class="hover:underline">San Antonio Plaza Arcade</a></li>
+                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Legazpi+Village" target="_blank" class="hover:underline">Legaspi Street</a></li>
+                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Sacred+Heart" target="_blank" class="hover:underline">Sacred Heart Street</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-purple-oven">Quezon City</p>
+                                    <ul class="ml-2 space-y-1">
+                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Temple+Drive" target="_blank" class="hover:underline">Temple Drive</a></li>
+                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Scout+Rallos" target="_blank" class="hover:underline">Scout Rallos</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-purple-oven">Alabang</p>
+                                    <ul class="ml-2 space-y-1">
+                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Alabang" target="_blank" class="hover:underline">Alabang Town Center</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-purple-oven">San Juan</p>
+                                    <ul class="ml-2 space-y-1">
+                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+San+Juan" target="_blank" class="hover:underline">Santolan Town Plaza</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800 mb-2 border-b border-gray-300 pb-1">Laguna 9AM – 9PM</p>
+                            <div class="space-y-3">
+                                <ul class="ml-2 space-y-1">
+                                    <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Santa+Rosa+Laguna" target="_blank" class="hover:underline">Santa Rosa</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Contact -->
+                <div class="md:w-1/3 md:border-l md:border-gray-300 md:pl-10">
+                    <h3 class="text-xl font-bold mb-6 text-purple-oven flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        Contact Us
+                    </h3>
+                    <p class="text-sm text-gray-500 mb-6 font-medium">9AM to 6PM</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex flex-col">
+                            <span class="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-1">Landline</span>
+                            <a href="tel:+63286314221" class="text-lg text-purple-oven font-bold hover:bg-purple-50 p-2 rounded-lg transition-colors inline-block border border-transparent hover:border-purple-100">
+                                +632 8631 4221
+                            </a>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-1">Viber / Mobile</span>
+                            <a href="tel:+639177103227" class="text-lg text-purple-oven font-bold hover:bg-purple-50 p-2 rounded-lg transition-colors inline-block border border-transparent hover:border-purple-100">
+                                +63917 710 3227
+                            </a>
+                        </div>
+                        <div class="flex flex-col pt-2">
+                            <span class="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-1">Email</span>
+                            <a href="mailto:orderonline@purpleoven.com.ph" class="text-base text-gray-700 font-medium hover:text-purple-oven break-all hover:underline">
+                                orderonline@purpleoven.com.ph
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-10 text-center text-xs text-gray-500 border-t pt-6">
+                © 2025 Purple Oven. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Global State and Constants ---
+        const APP_ROOT = document.getElementById('app');
+        const ORDER_EMAIL = "orderonline@purpleoven.com.ph"; 
+        const PO_LOGO_URL = "purple_oven.png";
+        
+        // --- EMAILJS CONFIGURATION ---
+        // Configured from your provided image
+        const EMAILJS_PUBLIC_KEY = "zipf8D6huE9iUliyx"; 
+        const EMAILJS_SERVICE_ID = "service_ovc10mr";
+        const EMAILJS_TEMPLATE_ID = "template_99fgo0t";
+
+        // Initialize EmailJS
+        (function() {
+            if(EMAILJS_PUBLIC_KEY){
+                emailjs.init(EMAILJS_PUBLIC_KEY);
+            }
+        })();
+        
+        let state = {
+            view: 'landing', 
+            selectedBrand: 'PurpleOven',
+            lastSubmittedFormData: null 
+        };
+
+        // --- MENU DATA ---
+        const purpleOvenMenuData = [
+            {
+                category: "Cakes",
+                subCategories: [
+                    {
+                        name: "Light Cakes (8 In)",
+                        items: [
+                            { name: "Honeycomb Crunch Cake - whole" },
+                            { name: "Pistachio Stardust - whole" },
+                            { name: "Chocolate Honeycomb Crunch Cake - whole" },
+                            { name: "Strawberry Kisses - whole" }
+                        ]
+                    },
+                    {
+                        name: "Cakes with Nutty Layers (8 In)",
+                        items: [
+                            { name: "Classic Sans Rival - whole" },
+                            { name: "Dark Mocha Sans Rival - whole" },
+                            { name: "White Chocolate Sans Rival - whole" },
+                            { name: "Rustic Chocolate Torte - whole" },
+                            { name: "Merry Cherry Torte - whole" },
+                            { name: "Mango Walnut Torte - whole" },
+                            { name: "Lemon Torte - whole" }
+                        ]
+                    },
+                    {
+                        name: "Chocolate Cakes (8 In)",
+                        items: [
+                            { name: "Grandma’s Chocolate Cake - whole" },
+                            { name: "Chocolate Dome Cake - whole" },
+                            { name: "Chocolate Campfire - whole" },
+                            { name: "Classic Chocolate Cake - whole" },
+                            { name: "Caramel Sauce - whole" }
+                        ]
+                    },
+                    {
+                        name: "Cheesecakes (8 In)",
+                        items: [
+                            { name: "New York Cheesecake - whole" },
+                            { name: "Blueberry Cheesecake - whole" },
+                            { name: "Oreo Cheesecake - whole" }
+                        ]
+                    },
+                    {
+                        name: "Tub Desserts (8x14 In)",
+                        items: [
+                            { name: "Tiramisu - whole" },
+                            { name: "Strawberries and Cream - whole" }
+                        ]
+                    },
+                    {
+                        name: "Pies (9 In)",
+                        items: [
+                            { name: "Apple Crumb Pie - whole" },
+                            { name: "Banoffee Pie - whole" }
+                        ]
+                    },
+                    {
+                        name: "Little Cakes and Pies",
+                        items: [
+                            { name: "Little Carrot Cake - pc" },
+                            { name: "Chocolate Lava Cake - pc" },
+                            { name: "Little Banoffee Pie - pc" },
+                            { name: "Little Apple Crumb Pie - pc" },
+                            { name: "Little Pecan Pie - pc" }
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Bars",
+                subCategories: [
+                    {
+                        name: "",
+                        items: [
+                            { name: "Mango Bars Half - 16pc" },
+                            { name: "Mango Bars Whole - 32pc" },
+                            { name: "Lemon Bars Half - 16pc" },
+                            { name: "Lemon Bars Whole - 32pc" },
+                            { name: "Double Chocolate Brownies Half - 16pc" },
+                            { name: "Double Chocolate Brownies Whole - 32pc" },
+                            { name: "Fudge Brownies Half - 16pc" },
+                            { name: "Fudge Brownies Whole - 32pc" },
+                            { name: "Food for the Gods Half - 16pc" },
+                            { name: "Food for the Gods Whole - 32pc" },
+                            { name: "Chocolate Revel Bars Half - 16pc" },
+                            { name: "Chocolate Revel Bars Whole - 32pc" }
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Cookies",
+                subCategories: [
+                    {
+                        name: "",
+                        items: [
+                            { name: "Chocolate Macadamia Cookie - pc" },
+                            { name: "White Chocolate Cashew Cookie - pc" },
+                            { name: "Chocolate Dipped Cookie - pc" },
+                            { name: "Double Chocolate Chip Cookie - pc" },
+                            { name: "Reese’s Peanut Butter Chip Cookie - pc" },
+                            { name: "White Chunk Chocolate Cookie - pc" },
+                            { name: "Oatmeal Raisin Cookie - pc" },
+                            { name: "Chocolate Crinkles - box of 12" }
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Loaves",
+                subCategories: [
+                    {
+                        name: "",
+                        items: [
+                            { name: "Banana Loaf - loaf" },
+                            { name: "Carrot Walnut Loaf - loaf" },
+                            { name: "Orange Almond Loaf - loaf" },
+                            { name: "Pistachio Lime Loaf - loaf" },
+                            { name: "Chocolate Banana Walnut Loaf - loaf" }
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Snack Packs",
+                subCategories: [
+                    {
+                        name: "",
+                        items: [
+                            { name: "Chocolate Carousel - pack" },
+                            { name: "Purple Crumble - pack" }
+                            ]
+                    }
+                ]
+            },
+            {
+                category: "Bread and Pastries",
+                subCategories: [
+                    {
+                        name: "Quiches",
+                        items: [
+                            { name: "Broccoli and Cheese Quiche - pc" },
+                            { name: "Quiche Lorraine - pc" }
+                        ]
+                    },
+                    {
+                        name: "Flaky Pastries",
+                        items: [
+                            { name: "Chicken Curry Turnover - pc" },
+                            { name: "Chili con Carne Turnover - pc" },
+                            { name: "Chorizo Roll - pc" },
+                            { name: "Sausage Puff - pc" },
+                            { name: "Spinach Danish - pc" },
+                            { name: "Tuna Turnover - pc" }
+                        ]
+                    },
+                    {
+                        name: "Soft Savory Buns",
+                        items: [
+                            { name: "Adobo Flakes Bun - pc" },
+                            { name: "Pork Asado Bun - pc" },
+                            { name: "Corned Beef Bun - pc" },
+                            { name: "Tuna Bun - pc" },
+                            { name: "Ham and Cheese Bun - pc" },
+                            { name: "Sausage Bun - pc" }
+                        ]
+                    },
+                    {
+                        name: "Croissants",
+                        items: [
+                            { name: "Butter Croissant - pc" },
+                            { name: "Ham and Cheese Croissant - pc" },
+                            { name: "Chocolate Croissant - pc" }
+                        ]
+                    },
+                    {
+                        name: "Sweet Breads",
+                        items: [
+                            { name: "Cheese Roll - pc" },
+                            { name: "Ensaymada - pc" },
+                            { name: "Soft Cinnamon Roll - pc" }
+                        ]
+                    },
+                    {
+                        name: "Artisan Breads",
+                        items: [
+                            { name: "Cinnamon Raisin Pretzel - pc" },
+                            { name: "Parmesan Pretzel - pc" },
+                            { name: "Sourdough - loaf" },
+                            { name: "Raisin Bread - loaf" }
+                        ]
+                    }
+                ]
+            },
+            {
+                category: "Reusable Bag",
+                subCategories: [
+                    {
+                        name: "",
+                        items: [
+                            { name: "Large Bag - pc" },
+                            { name: "Small Bag - pc" }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const brands = {
+            PurpleOven: {
+                theme: 'purple-white',
+                description: ``,
+                logo: PO_LOGO_URL,
+                menuFiles: Array.from({ length: 10 }, (_, i) => `PO_Menu-images-${i}.jpg`)
+            }
+        };
+        
+        const timeSlots = Array.from({ length: 11 }, (_, i) => `${(i + 9) % 12 === 0 ? 12 : (i + 9) % 12} ${i + 9 < 12 ? 'AM' : 'PM'}`).slice(0, 11); 
+        
+        const pickUpLocations = [
+            'Pasig - Portico',
+            'Makati - San Antonio Plaza Arcade',
+            'Makati - Legaspi Street',
+            'Makati - Sacred Heart Street',
+            'Quezon City - Temple Drive',
+            'Quezon City - Scout Rallos',
+            'Alabang - Alabang Town Center',
+            'San Juan - Santolan Town Plaza',
+            'Laguna - Santa Rosa'
+        ];
+        
+        // --- View Navigation ---
+
+        function showLanding() {
+            state.view = 'landing';
+            state.selectedBrand = 'PurpleOven';
+            render();
+        }
+
+        function showMenu(brand) {
+            state.view = 'menu';
+            state.selectedBrand = brand;
+            render();
+        }
+
+        function showOrder() {
+            state.view = 'order_form';
+            // Clear last form data when starting a new order
+            state.lastSubmittedFormData = null; 
+            render();
+        }
+
+        // --- HTML Rendering ---
+
+        function renderLanding() {
+            APP_ROOT.classList.add('justify-center');
+            return `
+                <div class="text-center animate-fadeIn w-full max-w-2xl flex flex-col items-center">
+                    <img src="${PO_LOGO_URL}" onerror="this.src='https://placehold.co/300x100/5D3FD3/fff?text=Purple+Oven'"
+                        alt="Purple Oven Logo" class="mx-auto mb-6 h-auto max-h-[200px] w-auto object-contain">
+                    
+                    <p class="text-xl text-gray-600 mb-10 max-w-xl leading-relaxed">
+                         At Purple Oven, we bake<br>
+                         all day everyday with<br>
+                         real eggs, cream, and butter.<br>
+                         And we serve them while<br>
+                         they’re at their best.<br>
+                         It makes us happy to<br>
+                         have you bring home<br>
+                         the freshest and finest<br>
+                         products we can offer.
+                    </p>
+
+                    <button onclick="showMenu('PurpleOven')"
+                            class="px-10 py-4 text-lg font-semibold text-white rounded-full transition duration-300 shadow-lg bg-purple-oven hover:bg-indigo-700 transform hover:scale-105">
+                        See Our Menu
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderMenu(brand) {
+            APP_ROOT.classList.remove('justify-center');
+            const data = brands[brand];
+            const themeClass = 'text-purple-oven border-purple-oven';
+            const buttonClass = 'bg-purple-oven hover:bg-indigo-700';
+
+            const menuContent = `
+                <div class="flex justify-center items-center mb-6">
+                    <img src="${data.logo}"
+                            onerror="this.src='https://placehold.co/80x80/5D3FD3/fff?text=${brand}'"
+                            alt="${brand} Logo" class="h-20 w-20 object-contain mx-auto">
+                </div>
+
+                <div class="h-[calc(100vh-280px)] max-h-[80vh] w-full border ${themeClass} rounded-xl overflow-y-auto menu-scroll shadow-inner bg-gray-50">
+                    <div class="space-y-4 p-2">
+                        ${data.menuFiles.map(file => `
+                            <img src="${file}"
+                                alt="${brand} Menu Page"
+                                class="w-full h-auto object-cover rounded-lg shadow-md"
+                                onerror="this.outerHTML='<div class=\\'p-8 text-center text-gray-500 bg-red-50 border border-red-200 rounded-lg\\'><p class=\\'text-lg font-medium\\'>⚠️ Menu image not loaded: ${file}</p><p class=\\'mt-2 text-sm\\'>Please ensure \\'${file}\\' is uploaded to the same directory as this webpage.</p></div>'"
+                            />
+                        `).join('')}
+                        ${data.menuFiles.length === 0 ? `<div class="p-8 text-center text-gray-500 bg-red-50 border border-red-200 rounded-xl h-full flex items-center justify-center"><p class="text-lg font-medium">⚠️ No menu files specified for ${brand}.</p></div>` : ''}
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex justify-between items-center">
+                    <button onclick="showLanding()" class="text-sm font-medium text-gray-500 hover:text-gray-700 transition duration-150 rounded-md">
+                        ← Back to Home
+                    </button>
+                    <button onclick="showOrder()"
+                            class="px-6 py-2 text-base font-semibold text-white rounded-full transition duration-300 shadow-md ${buttonClass} shadow-lg">
+                        Order Now
+                    </button>
+                </div>
+            `;
+            return `
+                <div class="w-full max-w-4xl animate-fadeIn">
+                    <div class="p-4 sm:p-8 bg-white rounded-2xl shadow-2xl border ${themeClass} transition duration-300">
+                        ${menuContent}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // --- Form Functions ---
+
+        function toggleQuantity(checkbox) {
+            const qtyInputId = `qty_${checkbox.id}`;
+            const qtyInput = document.getElementById(qtyInputId);
+            if (qtyInput) {
+                qtyInput.disabled = !checkbox.checked;
+                if (checkbox.checked) {
+                    qtyInput.focus();
+                    qtyInput.value = '1';
+                } else {
+                    qtyInput.value = '';
+                }
+            }
+        }
+        
+        function handleOrderTypeChange(type) {
+            const pickupSelect = document.getElementById('pickupSelect');
+            const deliveryNoticeContainer = document.getElementById('deliveryNoticeContainer');
+            const deliveryInput = document.getElementById('deliveryInput');
+            const landmarkInput = document.getElementById('landmarkInput');
+            const locationLabel = document.getElementById('locationLabel');
+            const giftSection = document.getElementById('giftSection');
+
+            if (type === 'Pick Up') {
+                pickupSelect.classList.remove('hidden');
+                pickupSelect.required = true;
+                
+                deliveryNoticeContainer.classList.add('hidden');
+                
+                deliveryInput.classList.add('hidden');
+                deliveryInput.required = false;
+                landmarkInput.classList.add('hidden');
+                giftSection.classList.add('hidden');
+                
+                locationLabel.innerText = 'Store Location *';
+                deliveryInput.value = ''; 
+            } else {
+                pickupSelect.classList.add('hidden');
+                pickupSelect.required = false;
+                
+                deliveryNoticeContainer.classList.remove('hidden');
+                
+                deliveryInput.classList.remove('hidden');
+                deliveryInput.required = true;
+                landmarkInput.classList.remove('hidden');
+                giftSection.classList.remove('hidden');
+                
+                locationLabel.innerText = 'Delivery Address *';
+                pickupSelect.selectedIndex = 0; 
+            }
+        }
+
+        function toggleGiftFields(checkbox) {
+            const recipientFields = document.getElementById('recipientFields');
+            const nameInput = recipientFields.querySelector('input[name="recipientName"]');
+            const mobileInput = recipientFields.querySelector('input[name="recipientMobile"]');
+
+            if (checkbox.checked) {
+                recipientFields.classList.remove('hidden');
+                nameInput.required = true;
+                mobileInput.required = true;
+            } else {
+                recipientFields.classList.add('hidden');
+                nameInput.required = false;
+                mobileInput.required = false;
+                nameInput.value = '';
+                mobileInput.value = '';
+            }
+        }
+
+        function getNextOrderNumber() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            
+            // NOTE: Using localStorage for order sequence is for demonstration only. 
+            let storedYear = localStorage.getItem('po_last_order_year');
+            let orderSeq = parseInt(localStorage.getItem('po_order_seq') || '1');
+
+            if (storedYear != currentYear) {
+                orderSeq = 1;
+            }
+
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const seqStr = String(orderSeq).padStart(3, '0');
+
+            return {
+                fullId: `${currentYear}${mm}${dd}-${seqStr}`,
+                seq: orderSeq,
+                year: currentYear
+            };
+        }
+
+        function incrementOrderNumber() {
+            const { seq, year } = getNextOrderNumber();
+            localStorage.setItem('po_order_seq', seq + 1);
+            localStorage.setItem('po_last_order_year', year);
+        }
+        
+        function checkItemSelection() {
+             const checkboxes = document.querySelectorAll('input[name="orderItem"]:checked');
+             let selectedCount = 0;
+
+             checkboxes.forEach(cb => {
+                const qtyInputId = `qty_${cb.id}`;
+                const qtyVal = parseInt(document.getElementById(qtyInputId).value || '0');
+                if (qtyVal > 0) {
+                    selectedCount++;
+                }
+            });
+            return selectedCount;
+        }
+
+        function renderPurpleOvenMenuSelection() {
+            let html = '';
+            html += `<p class="text-sm text-gray-500 mb-4">Check the items you want to order and input the desired quantity.</p>`;
+            html += `<div id="itemErrorContainer" class="mb-4"></div>`;
+
+            const categoriesToFlatten = ["Bars", "Cookies", "Loaves", "Snack Packs", "Reusable Bag"];
+
+            const renderItemFields = (items, catIndex, subCatIndex) => {
+                return items.map((item, itemIndex) => {
+                    const itemId = `item_${catIndex}_${subCatIndex}_${itemIndex}`;
+                    
+                    const parts = item.name.split(" - ");
+                    let itemName = parts[0];
+                    let itemUnit = parts.length > 1 ? parts.slice(1).join(" - ") : "";
+
+                    // Updated Grid Layout: Item Name takes available space, Qty and Unit are flushed right
+                    // Responsive: 
+                    // Mobile: Checkbox(20px) | Name(auto) | Qty(48px) | Unit(70px)
+                    return `<div class="grid grid-cols-[20px_1fr_48px_70px] sm:grid-cols-[20px_1fr_48px_100px] gap-2 sm:gap-4 items-center py-2 border-b border-gray-50 last:border-0">
+                                <!-- Checkbox -->
+                                <div class="flex items-center justify-center h-full">
+                                    <input type="checkbox" id="${itemId}" name="orderItem" value="${item.name}"
+                                           class="h-5 w-5 text-purple-oven rounded border-gray-300 focus:ring-purple-oven cursor-pointer"
+                                           onchange="toggleQuantity(this)">
+                                </div>
+                                
+                                <!-- Item Name -->
+                                <label for="${itemId}" class="text-sm text-gray-800 font-medium cursor-pointer select-none leading-tight break-words">
+                                    ${itemName}
+                                </label>
+
+                                <!-- Quantity Input (Align right) -->
+                                <div>
+                                    <input type="number" name="quantity_${item.name}" placeholder="" min="1" value="" disabled
+                                           class="w-full p-1 border border-gray-300 rounded-md text-right text-sm focus:ring-purple-oven focus:border-purple-oven disabled:bg-gray-100 disabled:text-gray-400"
+                                           id="qty_${itemId}">
+                                </div>
+                                
+                                <!-- Unit Display (Align right) -->
+                                <div class="text-xs text-gray-500 font-medium truncate text-right" title="${itemUnit}">
+                                    ${itemUnit}
+                                </div>
+                            </div>`;
+                }).join('');
+            };
+
+            purpleOvenMenuData.forEach((cat, catIndex) => {
+                const categoryId = `cat_${catIndex}`;
+                
+                html += `<details class="bg-gray-50 p-0 rounded-xl mt-4 border border-gray-200 shadow-sm overflow-hidden">
+                            <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-100 rounded-xl rounded-b-none transition-colors">
+                                <h3 class="text-lg font-bold text-purple-oven">${cat.category}</h3>
+                                <svg class="w-5 h-5 text-gray-600 summary-icon" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </summary>
+
+                            <div class="px-4 pb-4 space-y-4 pt-2">`; 
+
+                if (cat.category === "Bread and Pastries") {
+                    html += `<p class="text-xs text-gray-500 italic mb-3 ml-2">Orders of 6 to 7 pieces will be packed in a box.</p>`;
+                }
+
+                if (categoriesToFlatten.includes(cat.category)) {
+                    if (cat.subCategories.length > 0) {
+                        const subCat = cat.subCategories[0];
+                        html += `
+                            <div class="space-y-1">
+                                ${renderItemFields(subCat.items, catIndex, 0)}
+                            </div>
+                        `;
+                    }
+                } else {
+                    cat.subCategories.forEach((subCat, subCatIndex) => {
+                        const subCategoryId = `subcat_${catIndex}_${subCatIndex}`;
+                        html += `<details class="bg-white p-0 rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                                    <summary class="nested-summary flex items-center justify-between cursor-pointer p-3 hover:bg-gray-50 rounded-lg rounded-b-none transition-colors">
+                                        <h4 class="text-base font-semibold text-gray-700">${subCat.name}</h4>
+                                        <svg class="w-4 h-4 text-gray-500 summary-icon" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </summary>
+                                    <div class="px-3 pb-3 space-y-1 pt-2">
+                                        ${renderItemFields(subCat.items, catIndex, subCatIndex)}
+                                    </div>
+                                </details>`;
+                    });
+                }
+                html += `</div></details>`;
+            });
+
+            return html;
+        }
+
+        /**
+         * Converts date and time strings into the required iCalendar (ICS) format (YYYYMMDDTHHMMSSZ).
+         */
+        function toICSDateTime(dateStr, timeStr) {
+            const date = new Date(dateStr);
+            if (isNaN(date)) {
+                return '';
+            }
+
+            let hour = 0;
+            const parts = timeStr.toUpperCase().split(' ');
+            if (parts.length === 2) {
+                const h = parseInt(parts[0], 10);
+                const ampm = parts[1];
+                
+                if (ampm === 'PM' && h !== 12) {
+                    hour = h + 12;
+                } else if (ampm === 'AM' && h === 12) {
+                    hour = 0; // 12 AM is 00:00
+                } else {
+                    hour = h;
+                }
+            } else {
+                 return '';
+            }
+
+            date.setHours(hour, 0, 0, 0); 
+
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hh = String(hour).padStart(2, '0');
+            
+            // Assuming the event is 1 hour long for the reminder duration
+            const endHour = String((hour + 1) % 24).padStart(2, '0');
+            
+            return {
+                start: `${year}${month}${day}T${hh}0000`,
+                end: `${year}${month}${day}T${endHour}0000`
+            };
+        }
+
+        /**
+         * Generates and downloads an ICS calendar file.
+         */
+        function downloadICS() {
+            const formData = state.lastSubmittedFormData;
+            if (!formData) {
+                console.error("No form data found for calendar generation.");
+                return;
+            }
+
+            const orderId = formData.get('orderId');
+            const orderDate = formData.get('orderDate');
+            const timeSlot = formData.get('timeSlot');
+            const orderType = formData.get('orderType');
+            const customerName = formData.get('customerName');
+            
+            let location = "";
+            let description = `Pickup/Delivery Time: ${timeSlot}. Check your email for confirmation and payment details.`;
+            let summary = `Purple Oven Order #${orderId}`;
+
+            if (orderType === 'Pick Up') {
+                location = formData.get('pickupLocation');
+                summary = `Purple Oven Pickup: Order #${orderId}`;
+            } else {
+                location = formData.get('deliveryAddress');
+                summary = `Purple Oven Delivery: Order #${orderId}`;
+            }
+            
+            description = `Customer: ${customerName}\nType: ${orderType}\nLocation: ${location}\n\n${description}`;
+
+            const dt = toICSDateTime(orderDate, timeSlot);
+
+            if (!dt.start) {
+                 alert("Could not generate calendar reminder due to invalid date/time selection.");
+                 return;
+            }
+
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//PurpleOven//OrderReminder//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:${orderId}@purpleoven.com.ph
+DTSTAMP:${new Date().toISOString().replace(/[-:]|\\.\d{3}/g, '').substring(0, 15)}Z
+DTSTART:${dt.start}
+DTEND:${dt.end}
+SUMMARY:${summary}
+LOCATION:${location}
+DESCRIPTION:${description}
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const filename = `PurpleOven_Order_${orderId}.ics`;
+
+            // Create a temporary link element to trigger the download
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+        function renderOrderForm() {
+            APP_ROOT.classList.remove('justify-center');
+            const themeClass = 'bg-purple-oven text-white';
+            const borderClass = 'focus:border-purple-oven focus:ring-purple-oven';
+            
+            const timeOptions = timeSlots.map(t => `<option value="${t}">${t}</option>`).join('');
+            const locationOptions = pickUpLocations.map(l => `<option value="${l}">${l}</option>`).join('');
+
+            // DATE FIX: Use explicit YYYY-MM-DD construction to avoid timezone issues
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(now.getDate() + 1);
+            
+            // Format to YYYY-MM-DD using local time
+            const year = tomorrow.getFullYear();
+            const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+            const day = String(tomorrow.getDate()).padStart(2, '0');
+            const tomorrowStr = `${year}-${month}-${day}`;
+
+            // Limit Date to Dec 31 of current year
+            const currentYear = year;
+            const maxDateStr = `${currentYear}-12-31`;
+
+            const orderData = getNextOrderNumber();
+
+            return `
+                <div class="w-full max-w-4xl animate-fadeIn">
+                    <div class="flex items-center justify-between mb-6">
+                        <button onclick="showLanding()" class="text-sm text-gray-600 hover:text-purple-oven transition">
+                            ← Back to Home
+                        </button>
+                        <h2 class="text-2xl font-bold text-gray-800">How to Order</h2>
+                        <div class="w-20"></div> 
+                    </div>
+
+                    <form id="orderForm" onsubmit="handleFormSubmit(event)" class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100">
+                        
+                        <!-- Form Content (Hidden on Success) -->
+                        <div id="formContent">
+                            <div class="mb-10 notice-box p-6">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">Office Hours</h3>
+                                <p class="text-sm text-gray-700 mb-6">Our team is available to assist you with, receive, and facilitate your order daily from 9AM to 6PM.</p>
+
+                                <div class="space-y-4">
+                                    <div class="option-box p-4">
+                                        <h4 class="font-bold text-purple-oven mb-2">Option 1: Call Us</h4>
+                                        <p class="text-sm text-gray-700 mb-3">For orders today, please give us a call.</p>
+                                        <div class="text-sm font-medium text-gray-800 space-y-2">
+                                            <p>Landline: 
+                                                <a href="tel:+63286314221" class="text-purple-oven font-bold underline decoration-2 hover:text-indigo-800 transition-colors ml-1">
+                                                    +632 8631 4221
+                                                </a>
+                                            </p>
+                                            <p>Mobile / Viber: 
+                                                <a href="tel:+639177103227" class="text-purple-oven font-bold underline decoration-2 hover:text-indigo-800 transition-colors ml-1">
+                                                    +63917 710 3227
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="option-box p-4">
+                                        <h4 class="font-bold text-purple-oven mb-2">Option 2: Email Order To Us</h4>
+                                        <p class="text-sm text-gray-700">For orders tomorrow and onwards, please provide us with the details below. We will contact you to confirm the availability of your order before sending the bill.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-8">
+                                <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Customer Details</h3>
+                                <div class="form-grid">
+                                    <input type="hidden" name="orderId" value="${orderData.fullId}">
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                                        <input type="text" name="customerName" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number * (Min. 8 digits)</label>
+                                        <input type="tel" name="contactNumber" required minlength="8" pattern="[0-9]{8,}" title="Please enter at least 8 digits" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Date of Order *</label>
+                                        <input type="date" name="orderDate" required min="${tomorrowStr}" max="${maxDateStr}" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}" onchange="if(this.value < this.min) { alert('Please select a date from tomorrow onwards.'); this.value=''; }">
+                                        <p class="text-xs text-gray-500 mt-1">Select a date from tomorrow onwards (until Dec 31).</p>
+                                        <div id="dateError" class="hidden text-red-500 text-xs mt-1 font-semibold">Please select a valid date (Tomorrow onwards).</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-8">
+                                <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Delivery / Pick Up</h3>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Order Type *</label>
+                                    <div class="flex space-x-4">
+                                        <label class="inline-flex items-center cursor-pointer">
+                                            <input type="radio" name="orderType" value="Pick Up" checked onchange="handleOrderTypeChange('Pick Up')" class="text-purple-oven focus:ring-purple-oven w-4 h-4">
+                                            <span class="ml-2 text-gray-700">Pick Up</span>
+                                        </label>
+                                        <label class="inline-flex items-center cursor-pointer">
+                                            <input type="radio" name="orderType" value="Delivery" onchange="handleOrderTypeChange('Delivery')" class="text-purple-oven focus:ring-purple-oven w-4 h-4">
+                                            <span class="ml-2 text-gray-700">Delivery</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label id="locationLabel" class="block text-sm font-medium text-gray-700 mb-1">Store Location *</label>
+                                    
+                                    <select id="pickupSelect" name="pickupLocation" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}">
+                                        ${locationOptions}
+                                    </select>
+
+                                    <div id="deliveryNoticeContainer" class="hidden mb-4 bg-indigo-50 border border-indigo-100 rounded-lg p-4">
+                                        <p class="text-sm text-indigo-800">
+                                            We can arrange for delivery to your home, within Metro Manila. Please provide the delivery details below.
+                                        </p>
+                                    </div>
+
+                                    <textarea id="deliveryInput" name="deliveryAddress" rows="2" class="hidden w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}" placeholder="Enter complete delivery address"></textarea>
+                                    
+                                    <input type="text" id="landmarkInput" name="landmark" placeholder="Nearest Landmark" class="hidden w-full p-2 border border-gray-300 rounded-lg mt-2 focus:ring-2 focus:ring-opacity-50 ${borderClass}">
+                                    
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Time *</label>
+                                    <select name="timeSlot" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}">
+                                        <option value="" disabled selected>Select Time</option>
+                                        ${timeOptions}
+                                    </select>
+                                </div>
+                                
+                                <div id="giftSection" class="hidden mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                    <label class="inline-flex items-center mb-2 cursor-pointer">
+                                        <input type="checkbox" id="isGift" name="isGift" onchange="toggleGiftFields(this)" class="text-purple-oven rounded focus:ring-purple-oven w-5 h-5">
+                                        <span class="ml-2 font-medium text-gray-700">Is this a gift?</span>
+                                    </label>
+                                    
+                                    <div id="recipientFields" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2 animate-fadeIn">
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Recipient Name *</label>
+                                            <input type="text" name="recipientName" class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:ring-purple-oven">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Recipient Mobile *</label>
+                                            <input type="tel" name="recipientMobile" class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:ring-purple-oven">
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Dedication Note</label>
+                                            <textarea name="dedication" rows="2" class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:ring-purple-oven" placeholder="Message on card..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-8">
+                                <h3 id="itemSelectionTitle" class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Select Items</h3>
+                                ${renderPurpleOvenMenuSelection()}
+                            </div>
+
+                            <!-- Important Notice Section (Checkbox Removed) -->
+                            <div class="mb-8 bg-purple-50 border border-purple-200 rounded-lg p-4 text-sm text-gray-700">
+                                <p class="font-bold text-gray-900 mb-2">Important Notice:</p> 
+                                <p class="mb-2">As we bake in limited quantities daily, please allow us to confirm the availability of your order prior to sending the bill.</p>
+                                <p class="mb-0">Your order will be prepared and set aside for you as soon as full payment has been received by our team.</p>
+                            </div>
+
+                            <div class="text-center pt-4 flex flex-col items-center">
+                                
+                                <button type="submit" id="sendBtn"
+                                    class="w-full sm:w-auto px-12 py-3 bg-purple-oven hover:bg-indigo-700 text-white font-bold rounded-full shadow-lg transform transition hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-oven mb-6">
+                                    Send Order
+                                </button>
+
+                            </div>
+                        </div>
+                        
+                        <!-- Success Message (Shown on Success) -->
+                        <div id="successSection" class="hidden w-full flex flex-col items-center animate-fadeIn py-10">
+                             <div class="bg-green-50 border border-green-200 p-8 rounded-2xl text-center max-w-lg shadow-sm">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Order Sent Successfully!</h3>
+                                <p class="text-gray-600 mb-6">
+                                    Your order has been submitted to our team. We will review it and contact you shortly for confirmation and payment details.
+                                </p>
+                                
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 mb-6 text-left">
+                                    <p class="font-semibold text-gray-800 text-sm mb-2">What happens next?</p>
+                                    <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">
+                                        <li>Our team receives your order.</li>
+                                        <li>We check item availability.</li>
+                                        <li>You receive a confirmation message with the final bill.</li>
+                                    </ol>
+                                </div>
+                                
+                                <button type="button" onclick="showLanding()" class="mt-8 text-purple-oven font-medium hover:underline text-sm">
+                                    Back to Home
+                                </button>
+                             </div>
+                        </div>
+
+                    </form>
+                </div>
+            `;
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // --- CHECK FOR API KEYS FIRST ---
+            if(EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE") {
+                alert("EmailJS keys are missing! Please check the code configuration.");
+                return;
+            }
+
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            // --- 1. Date Validation Check (iOS Fix) ---
+            const dateInput = form.querySelector('input[name="orderDate"]');
+            const dateError = document.getElementById('dateError');
+            
+            if (dateInput) {
+                const selectedDateStr = dateInput.value;
+                const minDateStr = dateInput.getAttribute('min');
+                
+                if (selectedDateStr < minDateStr) {
+                    dateError.classList.remove('hidden'); 
+                    dateInput.classList.add('border-red-500', 'focus:ring-red-500'); 
+                    dateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    alert("Please select a date from tomorrow onwards."); 
+                    return; 
+                } else {
+                    dateError.classList.add('hidden');
+                    dateInput.classList.remove('border-red-500', 'focus:ring-red-500');
+                }
+            }
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const items = [];
+            const checkboxes = document.querySelectorAll('input[name="orderItem"]:checked');
+            
+            if (checkItemSelection() === 0) {
+                const errorMessage = document.getElementById('itemErrorContainer');
+                errorMessage.innerHTML = `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
+                    <strong class="font-bold">Missing Items!</strong>
+                    <span class="block sm:inline">Please select at least one item and enter a quantity greater than zero.</span>
+                </div>`;
+                document.getElementById('itemSelectionTitle').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            } else {
+                document.getElementById('itemErrorContainer').innerHTML = '';
+            }
+
+            checkboxes.forEach(cb => {
+                const qtyInputId = `qty_${cb.id}`;
+                const qtyVal = document.getElementById(qtyInputId).value;
+                if (qtyVal && qtyVal > 0) {
+                    items.push(`${qtyVal} x ${cb.value}`);
+                }
+            });
+            
+            state.lastSubmittedFormData = formData;
+            incrementOrderNumber();
+
+            // --- 4. Prepare EmailJS Params ---
+            const orderId = formData.get('orderId');
+            const customerName = formData.get('customerName');
+            const contactNumber = formData.get('contactNumber');
+            const orderDate = formData.get('orderDate');
+            const timeSlot = formData.get('timeSlot');
+            const orderType = formData.get('orderType'); 
+            
+            let locationDetails = "";
+            let recipientDetails = "";
+
+            if (orderType === 'Pick Up') {
+                locationDetails = `Store Location: ${formData.get('pickupLocation')}`;
+            } else {
+                locationDetails = `Delivery Address: ${formData.get('deliveryAddress')}\nLandmark: ${formData.get('landmark') || 'N/A'}`;
+                
+                if (document.getElementById('isGift') && document.getElementById('isGift').checked) {
+                    recipientDetails = `\n\n--- RECIPIENT DETAILS (GIFT) ---\nName: ${formData.get('recipientName')}\nMobile: ${formData.get('recipientMobile')}\nDedication: ${formData.get('dedication') || 'N/A'}`;
+                }
+            }
+
+            const bodyText = `ORDER DETAILS
+---------------------------
+Order Reference: ${orderId}
+Customer Name: ${customerName}
+Contact Number: ${contactNumber}
+Date of Order: ${orderDate}
+Time: ${timeSlot}
+Order Type: ${orderType}
+${locationDetails}${recipientDetails}
+
+ORDER LIST
+---------------------------
+${items.join('\n')}
+
+---------------------------
+Sent via Purple Oven Web App`;
+
+            // Update button to loading state
+            const sendBtn = document.getElementById('sendBtn');
+            const originalBtnText = sendBtn.innerText;
+            sendBtn.innerHTML = `<div class="spinner inline-block mr-2"></div> Sending...`;
+            sendBtn.disabled = true;
+
+            // --- 5. SEND VIA EMAILJS ---
+            const templateParams = {
+                message: bodyText,
+                // These standard fields can be mapped in your EmailJS template too
+                customer_name: customerName,
+                customer_email: "noreply@purpleoven.com.ph", // Or ask for their email
+                reply_to: "noreply@purpleoven.com.ph",
+                order_id: orderId
+            };
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    // Hide form, show success
+                    document.getElementById('formContent').classList.add('hidden');
+                    document.getElementById('successSection').classList.remove('hidden');
+                    document.getElementById('successSection').scrollIntoView({ behavior: 'smooth' });
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert("Order failed to send. Please try again or call us.");
+                    sendBtn.innerText = originalBtnText;
+                    sendBtn.disabled = false;
+                });
+        }
+
+        function render() {
+            APP_ROOT.innerHTML = '';
+            window.scrollTo(0, 0);
+
+            if (state.view === 'landing') {
+                APP_ROOT.innerHTML = renderLanding();
+            } else if (state.view === 'menu') {
+                APP_ROOT.innerHTML = renderMenu(state.selectedBrand);
+            } else if (state.view === 'order_form') {
+                APP_ROOT.innerHTML = renderOrderForm();
+                handleOrderTypeChange('Pick Up');
+            }
+        }
+
+        render();
+
+    </script>
+</body>
+</html>
