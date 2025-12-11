@@ -968,6 +968,12 @@ END:VCALENDAR`;
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number * (Min. 8 digits)</label>
                                         <input type="tel" name="contactNumber" required minlength="8" pattern="[0-9]{8,}" title="Please enter at least 8 digits" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}">
                                     </div>
+                                    <!-- ADDED EMAIL FIELD HERE -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                        <input type="email" name="customerEmail" required class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 ${borderClass}">
+                                    </div>
+                                    <!-- END ADDED EMAIL FIELD -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Date of Order *</label>
                                         <input type="date" name="orderDate" required 
@@ -1167,6 +1173,7 @@ END:VCALENDAR`;
                     // Customize messages based on field name
                     if (input.name === 'customerName') msg = "Please enter your full name.";
                     if (input.name === 'contactNumber') msg = "Contact number is required.";
+                    if (input.name === 'customerEmail') msg = "Please enter your email address."; // Added Email Error
                     if (input.name === 'timeSlot') msg = "Please select a time.";
                     if (input.name === 'pickupLocation') msg = "Please select a store location.";
                     if (input.name === 'deliveryAddress') msg = "Please enter your delivery address.";
@@ -1178,6 +1185,10 @@ END:VCALENDAR`;
                 // Specific Check for Contact Number length
                 else if (input.name === 'contactNumber' && input.value.length < 8) {
                     showError(input, "Please enter at least 8 digits.");
+                }
+                // Added Email Format Validation
+                else if (input.name === 'customerEmail' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+                    showError(input, "Please enter a valid email address.");
                 }
             });
 
@@ -1230,6 +1241,7 @@ END:VCALENDAR`;
             const orderId = formData.get('orderId');
             const customerName = formData.get('customerName');
             const contactNumber = formData.get('contactNumber');
+            const customerEmail = formData.get('customerEmail'); // Get Email
             const orderDate = formData.get('orderDate');
             const timeSlot = formData.get('timeSlot');
             const orderType = formData.get('orderType'); 
@@ -1250,7 +1262,8 @@ END:VCALENDAR`;
             const subject = `Order #${orderId} - ${customerName} - ${orderDate}`;
             
             // Re-building body with standard JS strings first for safety, then encoding entirely.
-            const rawBody = `ORDER DETAILS\r\n---------------------------\r\nOrder Reference: ${orderId}\r\nCustomer Name: ${customerName}\r\nContact Number: ${contactNumber}\r\nDate of Order: ${orderDate}\r\nTime: ${timeSlot}\r\nOrder Type: ${orderType}\r\n${locationDetails.replace(/%0D%0A/g, '\r\n')}${recipientDetails.replace(/%0D%0A/g, '\r\n')}\r\n\r\nORDER LIST\r\n---------------------------\r\n${items.join('\r\n')}\r\n\r\n---------------------------\r\nSent via Purple Oven Web App`;
+            // Added Customer Email to the body
+            const rawBody = `ORDER DETAILS\r\n---------------------------\r\nOrder Reference: ${orderId}\r\nCustomer Name: ${customerName}\r\nContact Number: ${contactNumber}\r\nEmail: ${customerEmail}\r\nDate of Order: ${orderDate}\r\nTime: ${timeSlot}\r\nOrder Type: ${orderType}\r\n${locationDetails.replace(/%0D%0A/g, '\r\n')}${recipientDetails.replace(/%0D%0A/g, '\r\n')}\r\n\r\nORDER LIST\r\n---------------------------\r\n${items.join('\r\n')}\r\n\r\n---------------------------\r\nSent via Purple Oven Web App`;
 
             const mailtoLink = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(rawBody)}`;
             window.location.href = mailtoLink;
