@@ -233,7 +233,7 @@
     <script>
         // --- Global State and Constants ---
         const APP_ROOT = document.getElementById('app');
-        const PO_LOGO_URL = "https://purpleoven.com.ph/wp-content/uploads/2020/09/Purple-Oven-Logo.png"; // Fallback URL
+        const PO_LOGO_URL = "purple_oven.png";
         
         // --- EMAILJS CONFIGURATION ---
         // Configured from your provided image
@@ -562,14 +562,11 @@
 
                 <div class="h-[calc(100vh-280px)] max-h-[80vh] w-full border ${themeClass} rounded-xl overflow-y-auto menu-scroll shadow-inner bg-gray-50">
                     <div class="space-y-4 p-2">
-                        <!-- Note: In a real environment, actual menu images would load here -->
                         ${data.menuFiles.map(file => `
-                            <div class="relative w-full bg-white rounded-lg shadow-sm border border-gray-100 p-4 min-h-[200px] flex items-center justify-center text-gray-400">
-                                <span class="text-center">
-                                    Menu Page Image<br>
-                                    <small>${file}</small>
-                                </span>
-                            </div>
+                            <img src="${file}" 
+                                 alt="Menu Page" 
+                                 class="w-full h-auto object-contain rounded-lg shadow-sm border border-gray-100"
+                                 onerror="this.style.display='none'">
                         `).join('')}
                     </div>
                 </div>
