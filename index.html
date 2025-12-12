@@ -758,7 +758,9 @@
             };
 
             purpleOvenMenuData.forEach((category, catIndex) => {
-                // Using Details/Summary for Collapsible - DEFAULT CLOSED (No 'open' attribute)
+                const isBreadAndPastries = category.category === "Bread and Pastries";
+
+                // Main category is initially collapsed (no 'open' attribute)
                 html += `<div class="mb-4 border border-gray-200 rounded-lg overflow-hidden">`;
                 html += `
                     <details class="group">
@@ -770,28 +772,35 @@
                                 </svg>
                             </span>
                         </summary>
-                        <div class="p-4 bg-white border-t border-gray-100 animate-fadeIn">
+                        <div class="p-4 bg-white border-t border-gray-100 animate-fadeIn space-y-3">
+                            ${isBreadAndPastries ? `
+                                <p class="text-xs text-gray-500 bg-gray-100 p-2 rounded-lg border border-gray-200">
+                                    * Orders of 6 to 7 pieces will be packed in a box.
+                                </p>
+                            ` : ''}
                 `;
                 
                 category.subCategories.forEach((subCat, subCatIndex) => {
-                    // Logic for Nested Collapsibles (Cakes, Breads, etc. that have subcat names)
+                    // Sub-categories are also initially collapsed (no 'open' attribute)
                     if (subCat.name) {
+                        // Applying island look to named sub-categories
                         html += `
-                            <details class="group/sub mb-2 last:mb-0">
-                                <summary class="flex items-center cursor-pointer py-2 px-2 hover:bg-gray-50 rounded select-none">
+                            <details class="group/sub mb-3 last:mb-0 bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                <summary class="flex items-center cursor-pointer p-3 hover:bg-gray-100 rounded-lg select-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2 transform transition-transform duration-200 summary-icon" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                     </svg>
-                                    <h4 class="text-md font-semibold text-gray-700">${subCat.name}</h4>
+                                    <h4 class="text-md font-semibold text-gray-800">${subCat.name}</h4>
                                 </summary>
-                                <div class="pl-4 sm:pl-6 pb-2 border-l border-gray-100 ml-2">
+                                <!-- Content padding adjusted, remove inner decorative border -->
+                                <div class="px-3 pb-3 pt-0 border-t border-gray-200">
                                     ${renderItemFields(subCat.items, catIndex, subCatIndex)}
                                 </div>
                             </details>
                         `;
                     } else {
-                        // For categories without sub-names (Bars, Cookies), just render the list
-                        html += `<div class="pl-0 sm:pl-2">`;
+                        // For categories without sub-names (Bars, Cookies), rendering as a distinct list box
+                        html += `<div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm">`;
                         html += renderItemFields(subCat.items, catIndex, subCatIndex);
                         html += `</div>`;
                     }
@@ -895,7 +904,7 @@
                                 <!-- Delivery Notice -->
                                 <div id="deliveryNoticeContainer" class="notice-box p-4 hidden">
                                     <p class="text-sm text-gray-700">
-                                        <strong>Note:</strong> We can arrange for delivery to your home, within Metro Manila. Please provide the delivery details below.
+                                        We can arrange for delivery to your home, within Metro Manila. Please provide the delivery details below.
                                     </p>
                                 </div>
 
