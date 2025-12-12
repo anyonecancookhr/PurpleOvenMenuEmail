@@ -575,7 +575,8 @@
                 </div>
                 
                 <div class="mt-8 flex justify-between items-center">
-                    <button onclick="showLanding()" class="text-sm font-medium text-gray-500 hover:text-gray-700 transition duration-150 rounded-md">
+                    <!-- Updated: Added pill shape styling -->
+                    <button onclick="showLanding()" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-full hover:bg-gray-100 transition duration-150">
                         ← Back to Home
                     </button>
                     <button onclick="showOrder()"
@@ -822,10 +823,16 @@
             const formHtml = `
                 <div class="w-full max-w-4xl animate-fadeIn">
                     
+                    <!-- Added Logo Block -->
+                    <div class="flex justify-center mb-6">
+                        <img src="${PO_LOGO_URL}" onerror="this.src='https://placehold.co/100x40/5D3FD3/fff?text=Purple+Oven'"
+                            alt="Purple Oven Logo" class="h-16 w-auto object-contain">
+                    </div>
+
                     <!-- Title and Back Button (Outside the form window) -->
                     <div class="relative w-full mb-6 px-2 sm:px-0">
-                        <!-- Back to Menu (Upper Left) -->
-                        <button type="button" onclick="showMenu('PurpleOven')" class="absolute left-0 top-0 text-sm text-gray-500 hover:text-purple-600 transition underline">
+                        <!-- Back to Menu (Upper Left) - Updated to pill button style -->
+                        <button type="button" onclick="showMenu('PurpleOven')" class="absolute left-0 top-0 px-4 py-1 text-sm text-gray-700 border border-gray-300 rounded-full hover:bg-gray-100 transition duration-150">
                             ← Back to Menu
                         </button>
                         <!-- How to Order Title (Centered and not bold) -->
@@ -991,7 +998,7 @@
 
                             <!-- Submit -->
                              <div class="pt-2 border-t border-gray-100 flex flex-col gap-4 items-center"> <!-- Added items-center here -->
-                                <button type="submit" id="submitBtn" class="py-4 px-12 bg-purple-oven text-white font-bold text-xl rounded-xl hover:bg-indigo-800 transition shadow-lg inline-flex justify-center items-center gap-2">
+                                <button type="submit" id="submitBtn" class="py-4 px-12 bg-purple-oven text-white font-bold text-xl rounded-full hover:bg-indigo-800 transition shadow-lg inline-flex justify-center items-center gap-2">
                                     Submit Order
                                 </button>
                             </div>
