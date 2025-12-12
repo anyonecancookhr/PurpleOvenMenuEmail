@@ -823,8 +823,20 @@
                                     <h4 class="font-bold text-purple-800 mb-2">Option 1: Call Us</h4>
                                     <p class="text-sm text-gray-600 mb-3">For orders today, please give us a call.</p>
                                     <div class="space-y-1 text-sm font-medium">
-                                        <p><span class="text-gray-500">Landline:</span> <a href="tel:+63286314221" class="text-purple-700 hover:underline">+632 8631 4221</a></p>
-                                        <p><span class="text-gray-500">Mobile / Viber:</span> <a href="tel:+639177103227" class="text-purple-700 hover:underline">+63917 710 3227</a></p>
+                                        <p>
+                                            <span class="text-gray-500">Landline:</span> 
+                                            <!-- Enhanced link style for clarity -->
+                                            <a href="tel:+63286314221" class="text-purple-700 font-bold hover:underline bg-purple-100/50 p-1 rounded-md transition-colors inline-block">
+                                                +632 8631 4221
+                                            </a>
+                                        </p>
+                                        <p>
+                                            <span class="text-gray-500">Mobile / Viber:</span> 
+                                            <!-- Enhanced link style for clarity -->
+                                            <a href="tel:+639177103227" class="text-purple-700 font-bold hover:underline bg-purple-100/50 p-1 rounded-md transition-colors inline-block">
+                                                +63917 710 3227
+                                            </a>
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm w-full">
@@ -839,6 +851,7 @@
                             <!-- Customer Details -->
                             <div class="space-y-4">
                                 <h3 class="text-lg font-bold text-gray-800 border-b pb-2">Customer Details</h3>
+                                <!-- Removed customerSocial input field (Facebook/Instagram) -->
                                 <div class="form-grid">
                                     <div class="flex flex-col">
                                         <label class="text-sm font-semibold text-gray-600 mb-1">Full Name *</label>
@@ -852,10 +865,7 @@
                                         <label class="text-sm font-semibold text-gray-600 mb-1">Email Address *</label>
                                         <input type="email" name="customerEmail" required class="p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
                                     </div>
-                                    <div class="flex flex-col">
-                                        <label class="text-sm font-semibold text-gray-600 mb-1">Facebook / Instagram</label>
-                                        <input type="text" name="customerSocial" class="p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none">
-                                    </div>
+                                    
                                 </div>
                             </div>
 
@@ -1052,13 +1062,13 @@
             const orderId = getNextOrderNumber();
             const orderType = formData.get('orderType');
             const location = orderType === 'Pick Up' ? formData.get('pickupLocation') : formData.get('deliveryAddress') + (formData.get('landmark') ? ` (Landmark: ${formData.get('landmark')})` : '');
-
+            
+            // Note: customer_social field is removed but we check for it in the payload to ensure it is not sent.
             const templateParams = {
                 order_id: orderId,
                 customer_name: formData.get('customerName'),
                 customer_email: formData.get('customerEmail'),
                 customer_mobile: formData.get('customerMobile'),
-                customer_social: formData.get('customerSocial') || 'N/A',
                 order_type: orderType,
                 location_address: location,
                 order_date: formData.get('orderDate'),
