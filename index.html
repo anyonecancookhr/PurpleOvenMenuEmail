@@ -719,7 +719,8 @@
 
         function renderPurpleOvenMenuSelection() {
             let html = '';
-            html += `<p class="text-sm text-gray-500 mb-4 bg-gray-50 p-3 rounded border border-gray-100">Check the items you want to order and input the desired quantity. Click on category headers to expand/collapse.</p>`;
+            // Updated instruction text
+            html += `<p class="text-sm text-gray-500 mb-4 bg-gray-50 p-3 rounded-lg border border-gray-100">Check the items you want to order and input the desired quantity.</p>`;
             html += `<div id="itemErrorContainer" class="mb-4 text-red-500 text-sm font-semibold"></div>`;
 
             const renderItemFields = (items, catIndex, subCatIndex) => {
@@ -730,7 +731,7 @@
                     let itemName = parts[0];
                     let itemUnit = parts.length > 1 ? parts.slice(1).join(" - ") : "";
 
-                    return `<div class="grid grid-cols-[20px_1fr_48px_70px] sm:grid-cols-[20px_1fr_48px_100px] gap-2 sm:gap-4 items-center py-2 border-b border-gray-50 last:border-0">
+                    return `<div class="grid grid-cols-[20px_1fr_48px_70px] sm:grid-cols-[20px_1fr_48px_100px] gap-2 sm:gap-4 items-center py-2 border-b border-gray-200 last:border-0">
                                 <!-- Checkbox -->
                                 <div class="flex items-center justify-center h-full">
                                     <input type="checkbox" id="${itemId}" name="orderItem" value="${item.name}" 
@@ -759,6 +760,7 @@
 
             purpleOvenMenuData.forEach((category, catIndex) => {
                 const isBreadAndPastries = category.category === "Bread and Pastries";
+                const isUnnamedSubCategories = category.subCategories.length === 1 && category.subCategories[0].name === "";
 
                 // Main category is initially collapsed (no 'open' attribute)
                 html += `<div class="mb-4 border border-gray-200 rounded-lg overflow-hidden">`;
@@ -783,9 +785,9 @@
                 category.subCategories.forEach((subCat, subCatIndex) => {
                     // Sub-categories are also initially collapsed (no 'open' attribute)
                     if (subCat.name) {
-                        // Applying island look to named sub-categories
+                        // Applying island look to named sub-categories (Cakes > Light Cakes)
                         html += `
-                            <details class="group/sub mb-3 last:mb-0 bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                            <details class="group/sub mb-3 last:mb-0 bg-white border border-gray-200 rounded-lg overflow-hidden">
                                 <summary class="flex items-center cursor-pointer p-3 hover:bg-gray-100 rounded-lg select-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2 transform transition-transform duration-200 summary-icon" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -799,8 +801,9 @@
                             </details>
                         `;
                     } else {
-                        // For categories without sub-names (Bars, Cookies), rendering as a distinct list box
-                        html += `<div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm">`;
+                        // For categories without sub-names (Bars, Cookies, Loaves, Snack Packs, Reusable Bag)
+                        // Rendering as a white "window" with a thin border.
+                        html += `<div class="bg-white p-3 rounded-lg border border-gray-200 mb-3 last:mb-0">`;
                         html += renderItemFields(subCat.items, catIndex, subCatIndex);
                         html += `</div>`;
                     }
@@ -815,50 +818,53 @@
         function renderOrderForm() {
             APP_ROOT.classList.remove('justify-center');
             
-            // Cleaned up header to match the white aesthetics of the original snippet
+            // Removed logo and moved title outside the form container
             const formHtml = `
                 <div class="w-full max-w-4xl animate-fadeIn">
+                    
+                    <!-- Title and Back Button (Outside the form window) -->
+                    <div class="relative w-full mb-6 px-2 sm:px-0">
+                        <!-- Back to Menu (Upper Left) -->
+                        <button type="button" onclick="showMenu('PurpleOven')" class="absolute left-0 top-0 text-sm text-gray-500 hover:text-purple-600 transition underline">
+                            ← Back to Menu
+                        </button>
+                        <!-- How to Order Title (Centered and not bold) -->
+                        <h2 class="text-3xl text-center font-normal text-gray-900">How to Order</h2>
+                    </div>
+
                     <form id="orderForm" onsubmit="submitOrder(event)" class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
                         
-                        <!-- Header (Clean Style) -->
-                        <div class="p-8 pb-4 text-center border-b border-gray-100">
-                             <img src="${PO_LOGO_URL}" onerror="this.src='https://placehold.co/300x100/5D3FD3/fff?text=Purple+Oven'"
-                                alt="Purple Oven Logo" class="mx-auto h-24 w-auto object-contain mb-4">
-                            <h2 class="text-2xl font-bold text-purple-oven">How to Order</h2>
-                            <button type="button" onclick="showMenu('PurpleOven')" class="mt-4 text-sm text-gray-500 hover:text-purple-600 transition underline">
-                                ← Back to Menu
-                            </button>
-                        </div>
-
-                        <!-- Office Hours & Methods -->
-                        <div class="bg-purple-50 p-6 sm:p-8 border-b border-purple-100">
-                            <h3 class="text-lg font-bold text-purple-900 mb-2">Office Hours</h3>
+                        <!-- Office Hours & Methods (Now black title and distinct windows) -->
+                        <div class="p-6 sm:p-8 border-b border-gray-100 bg-gray-50">
+                            <h3 class="text-xl font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">Office Hours</h3>
                             <p class="text-gray-700 text-sm mb-6">Our team is available to assist you with, receive, and facilitate your order daily from 9AM to 6PM.</p>
                             
                             <div class="flex flex-col gap-6">
-                                <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm w-full">
+                                <!-- Option 1: Call Us (Slightly darker purple window) -->
+                                <div class="bg-purple-100/50 p-4 rounded-lg border border-purple-200 shadow-inner w-full">
                                     <h4 class="font-bold text-purple-800 mb-2">Option 1: Call Us</h4>
-                                    <p class="text-sm text-gray-600 mb-3">For orders today, please give us a call.</p>
+                                    <p class="text-sm text-gray-700 mb-3">For orders today, please give us a call.</p>
                                     <div class="space-y-1 text-sm font-medium">
                                         <p>
                                             <span class="text-gray-500">Landline:</span> 
                                             <!-- Enhanced link style for clarity -->
-                                            <a href="tel:+63286314221" class="text-purple-700 font-bold hover:underline bg-purple-100/50 p-1 rounded-md transition-colors inline-block">
+                                            <a href="tel:+63286314221" class="text-purple-700 font-bold hover:underline bg-purple-200/50 p-1 rounded-md transition-colors inline-block">
                                                 +632 8631 4221
                                             </a>
                                         </p>
                                         <p>
                                             <span class="text-gray-500">Mobile / Viber:</span> 
                                             <!-- Enhanced link style for clarity -->
-                                            <a href="tel:+639177103227" class="text-purple-700 font-bold hover:underline bg-purple-100/50 p-1 rounded-md transition-colors inline-block">
+                                            <a href="tel:+639177103227" class="text-purple-700 font-bold hover:underline bg-purple-200/50 p-1 rounded-md transition-colors inline-block">
                                                 +63917 710 3227
                                             </a>
                                         </p>
                                     </div>
                                 </div>
-                                <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm w-full">
+                                <!-- Option 2: Order Online (Slightly darker purple window) -->
+                                <div class="bg-purple-100/50 p-4 rounded-lg border border-purple-200 shadow-inner w-full">
                                     <h4 class="font-bold text-purple-800 mb-2">Option 2: Order Online</h4>
-                                    <p class="text-sm text-gray-600">For orders tomorrow and onwards, please provide us with the details below. We will contact you as soon as we can confirm your order.</p>
+                                    <p class="text-sm text-gray-700">For orders tomorrow and onwards, please provide us with the details below. We will contact you as soon as we can confirm your order.</p>
                                 </div>
                             </div>
                         </div>
@@ -886,9 +892,9 @@
                                 </div>
                             </div>
 
-                            <!-- Order Details -->
+                            <!-- Order Details (Updated Title) -->
                             <div class="space-y-4">
-                                <h3 class="text-lg font-bold text-gray-800 border-b pb-2">Order Details</h3>
+                                <h3 class="text-lg font-bold text-gray-800 border-b pb-2">Delivery / Pick Up</h3>
                                 
                                 <div class="flex gap-6 mb-4">
                                     <label class="flex items-center gap-2 cursor-pointer">
@@ -932,7 +938,7 @@
                                         <label class="text-sm font-semibold text-gray-600 mb-1">Date *</label>
                                         <!-- Changed type to 'text' for Flatpickr, removed inline validtion since Flatpickr handles it visually -->
                                         <input type="text" id="datePicker" name="orderDate" required placeholder="Select Order Date..." class="p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white">
-                                        <p class="text-xs text-gray-500 mt-1">Ordering available from tomorrow up to 1 year.</p>
+                                        <!-- Removed: Ordering available from tomorrow up to 1 year. -->
                                     </div>
                                     <div class="flex flex-col">
                                         <label class="text-sm font-semibold text-gray-600 mb-1">Time *</label>
@@ -971,15 +977,16 @@
                             <div>
                                 <h3 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Select Items</h3>
                                 ${renderPurpleOvenMenuSelection()}
-                            </div>
-
-                            <!-- Important Notice -->
-                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                                <p class="text-yellow-800 font-bold text-sm mb-1">Important Notice:</p>
-                                <p class="text-sm text-yellow-800 leading-relaxed">
-                                    As we bake in limited quantities daily, please allow us to check the availability of your order. 
-                                    <span class="font-extrabold">We shall call you as soon as we can confirm your order.</span>
-                                </p>
+                                
+                                <!-- Important Notice (Relocated and styling updated) -->
+                                <div class="bg-purple-100/50 border border-purple-200 rounded-lg p-4 mt-8">
+                                    <!-- Removed font-bold from title, Changed text-color to gray-800/700 -->
+                                    <p class="text-gray-800 text-sm mb-1">Important Notice:</p>
+                                    <p class="text-sm text-gray-700 leading-relaxed">
+                                        As we bake in limited quantities daily, please allow us to check the availability of your order. 
+                                        We shall call you as soon as we can confirm your order.
+                                    </p>
+                                </div>
                             </div>
 
                             <!-- Submit -->
