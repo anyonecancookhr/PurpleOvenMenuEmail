@@ -233,10 +233,12 @@
     <script>
         // --- Global State and Constants ---
         const APP_ROOT = document.getElementById('app');
+        
+        // --- GITHUB IMAGE REFERENCES ---
+        // Ensure 'purple_oven.png' and 'PO_Menu-images-0.jpg' etc. are in the SAME repo folder as this index.html
         const PO_LOGO_URL = "purple_oven.png";
         
         // --- EMAILJS CONFIGURATION ---
-        // Configured from your provided image
         const EMAILJS_PUBLIC_KEY = "zipf8D6huE9iUliyx"; 
         const EMAILJS_SERVICE_ID = "service_ovc10mr";
         const EMAILJS_TEMPLATE_ID = "template_99fgo0t";
@@ -565,8 +567,8 @@
                         ${data.menuFiles.map(file => `
                             <img src="${file}" 
                                  alt="Menu Page" 
-                                 class="w-full h-auto object-contain rounded-lg shadow-sm border border-gray-100"
-                                 onerror="this.style.display='none'">
+                                 class="w-full h-auto object-contain rounded-lg shadow-sm border border-gray-100 min-h-[200px] bg-gray-50"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/600x800/f3f4f6/9ca3af?text=Image+Not+Found:\\n${file}'; this.style.objectFit='contain';">
                         `).join('')}
                     </div>
                 </div>
@@ -1092,7 +1094,11 @@
         }
 
         // --- Init ---
-        render();
+        // FIX: Wrap the initial render call in an IIFE to ensure all function definitions 
+        // in the large script block are processed first, resolving the ReferenceError.
+        (function() {
+            render();
+        })();
 
     </script>
 </body>
