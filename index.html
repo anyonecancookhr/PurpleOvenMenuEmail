@@ -864,7 +864,7 @@
                                 <!-- Option 2: Order Online (Slightly darker purple window) -->
                                 <div class="bg-purple-100/50 p-4 rounded-lg border border-purple-200 shadow-inner w-full">
                                     <h4 class="font-bold text-purple-800 mb-2">Option 2: Order Online</h4>
-                                    <p class="text-sm text-gray-700">For orders tomorrow and onwards, please provide us with the details below. We will contact you as soon as we can confirm your order.</p>
+                                    <p class="text-sm text-gray-700">For orders from tomorrow onwards, please provide us with the details below. We will contact you as soon as we can confirm your order.</p>
                                 </div>
                             </div>
                         </div>
@@ -938,7 +938,7 @@
                                         <label class="text-sm font-semibold text-gray-600 mb-1">Date *</label>
                                         <!-- Changed type to 'text' for Flatpickr, removed inline validtion since Flatpickr handles it visually -->
                                         <input type="text" id="datePicker" name="orderDate" required placeholder="Select Order Date..." class="p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none bg-white">
-                                        <!-- Removed: Ordering available from tomorrow up to 1 year. -->
+                                        
                                     </div>
                                     <div class="flex flex-col">
                                         <label class="text-sm font-semibold text-gray-600 mb-1">Time *</label>
@@ -990,8 +990,8 @@
                             </div>
 
                             <!-- Submit -->
-                             <div class="pt-2 border-t border-gray-100 flex flex-col gap-4">
-                                <button type="submit" id="submitBtn" class="w-full py-4 bg-purple-oven text-white font-bold text-xl rounded-xl hover:bg-indigo-800 transition shadow-lg flex justify-center items-center gap-2">
+                             <div class="pt-2 border-t border-gray-100 flex flex-col gap-4 items-center"> <!-- Added items-center here -->
+                                <button type="submit" id="submitBtn" class="py-4 px-12 bg-purple-oven text-white font-bold text-xl rounded-xl hover:bg-indigo-800 transition shadow-lg inline-flex justify-center items-center gap-2">
                                     Submit Order
                                 </button>
                             </div>
