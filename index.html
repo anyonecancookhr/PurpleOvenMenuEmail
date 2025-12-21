@@ -212,7 +212,6 @@
             </div>
             <div class="mt-10 flex flex-col items-center gap-4 text-center text-xs text-gray-500 border-t pt-6">
                 <p>© 2025 Purple Oven. All rights reserved.</p>
-                <button onclick="showAdminPrompt()" class="text-gray-500 font-medium hover:text-purple-oven transition rounded-full border border-transparent px-3 py-1 hover:border-purple-100">Admin Logs</button>
             </div>
         </div>
     </footer>
@@ -227,7 +226,7 @@
 
         // --- Firebase Configuration ---
         // !!! IMPORTANT FOR GITHUB/EXTERNAL HOSTING !!!
-        // To make the Admin Login work on your own website, you must:
+        // To generate strictly sequential order numbers (1001, 1002...), you MUST connect a database.
         // 1. Go to https://console.firebase.google.com/
         // 2. Create a new project (it's free).
         // 3. Register a "Web App" in the project settings.
@@ -265,7 +264,7 @@
                 auth = getAuth(app);
                 db = getFirestore(app);
             } else {
-                console.warn("Firebase Config missing. Admin logs and Order ID generation will be local/random.");
+                console.warn("Firebase Config missing. Order IDs will be timestamp-based instead of sequential.");
             }
         } catch (e) {
             console.warn("Error initializing Firebase:", e);
@@ -284,8 +283,7 @@
             view: 'landing', 
             isSubmitting: false,
             lastOrderDetails: null,
-            user: null,
-            adminData: []
+            user: null
         };
 
         const initAuth = async () => {
@@ -305,29 +303,27 @@
             onAuthStateChanged(auth, (user) => { state.user = user; });
         }
 
-        // --- Sequential ID with Date Prefix ---
+        // --- Sequential ID Logic ---
         async function getOrderNumber() {
+            // Generate a time-based ID using Hong Kong Time (UTC+8)
             const now = new Date();
-            const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
             
-            if (!state.user || !isFirebaseAvailable) return `${dateStr}-${Math.floor(Math.random() * 1000)}`;
+            // Convert current local time to UTC, then add 8 hours for HK/PH time
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const hkTime = new Date(utc + (3600000 * 8));
 
-            const counterDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'counters', 'orders');
+            const year = hkTime.getFullYear();
+            const month = String(hkTime.getMonth() + 1).padStart(2, '0');
+            const day = String(hkTime.getDate()).padStart(2, '0');
+            const hours = String(hkTime.getHours()).padStart(2, '0');
+            const minutes = String(hkTime.getMinutes()).padStart(2, '0');
+            const seconds = String(hkTime.getSeconds()).padStart(2, '0');
             
-            try {
-                const sequentialId = await runTransaction(db, async (transaction) => {
-                    const counterDoc = await transaction.get(counterDocRef);
-                    let newCount = 1;
-                    if (counterDoc.exists()) {
-                        newCount = (counterDoc.data().count || 0) + 1;
-                    }
-                    transaction.set(counterDocRef, { count: newCount }, { merge: true });
-                    return String(newCount).padStart(4, '0');
-                });
-                return `${dateStr}-${sequentialId}`;
-            } catch (e) {
-                return `${dateStr}-${Math.floor(Math.random() * 1000)}`;
-            }
+            // Add milliseconds (2 digits) to ensure uniqueness if multiple orders come in at the same second
+            const ms = String(hkTime.getMilliseconds()).padStart(3, '0').substring(0, 2);
+
+            // Format: YYYYMMDD-HHMMSSms (e.g., 20251225-14300512)
+            return `${year}${month}${day}-${hours}${minutes}${seconds}${ms}`;
         }
 
         // --- Data ---
@@ -380,51 +376,6 @@
         const pickUpLocations = ['Pasig - Portico', 'Makati - San Antonio Plaza Arcade', 'Makati - Legaspi Street', 'Makati - Sacred Heart Street', 'Quezon City - Temple Drive', 'Quezon City - Scout Rallos', 'Alabang - Alabang Town Center', 'San Juan - Santolan Town Plaza', 'Laguna - Santa Rosa'];
         const timeSlots = Array.from({ length: 11 }, (_, i) => `${(i + 9) % 12 === 0 ? 12 : (i + 9) % 12} ${i + 9 < 12 ? 'AM' : 'PM'}`).slice(0, 11);
 
-        // --- Admin Logic ---
-        window.showAdminPrompt = () => {
-            const pin = prompt("Enter Admin Password:");
-            if (pin === "Strawberrykisses") {
-                if (!isFirebaseAvailable) {
-                    alert("⚠️ Database Connection Missing\n\nBecause this file is running outside of the Canvas environment (e.g., on GitHub), it cannot access the internal database credentials.\n\nTo fix this:\n1. Open the code file.\n2. Look for the 'manualConfig' variable.\n3. Paste your own Firebase project configuration there.");
-                    return;
-                }
-                state.view = 'admin';
-                loadAdminData();
-            } else if (pin !== null) {
-                alert("Incorrect password.");
-            }
-        };
-
-        async function loadAdminData() {
-            if (!state.user || !isFirebaseAvailable) return;
-            render(); 
-            const ordersRef = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
-            try {
-                const snap = await getDocs(ordersRef);
-                state.adminData = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                state.adminData.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-                render();
-            } catch (e) { alert("Failed to fetch logs."); }
-        }
-
-        window.downloadCSV = () => {
-            if (!state.adminData.length) return;
-            const headers = ["OrderID", "SubmitDate", "Customer", "Mobile", "Email", "Type", "Location", "Landmark", "OrderDate", "OrderTime", "Items"];
-            const rows = state.adminData.map(o => [
-                o.order_id, 
-                o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString() : '',
-                o.customer_name, o.customer_mobile, o.customer_email, o.order_type, o.location, o.landmark || '', o.order_date, o.order_time,
-                o.order_summary?.replace(/\n/g, ' | ')
-            ]);
-            let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(r => r.map(cell => `"${cell}"`).join(",")).join("\n");
-            const link = document.createElement("a");
-            link.href = encodeURI(csvContent);
-            link.download = `PurpleOven_Logs_${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
-
         // --- App Loop ---
         function render() {
             const root = document.getElementById('app');
@@ -432,7 +383,6 @@
             else if (state.view === 'menu') root.innerHTML = renderMenu();
             else if (state.view === 'order_form') renderOrderForm();
             else if (state.view === 'success') root.innerHTML = renderSuccess();
-            else if (state.view === 'admin') root.innerHTML = renderAdmin();
             window.scrollTo(0,0);
         }
 
@@ -744,46 +694,6 @@
                     <p class="text-purple-oven font-bold text-xl mb-4">Order #${state.lastOrderDetails.order_id}</p>
                     <p class="text-lg text-gray-600 mb-8">Expect a call from us before 6pm to confirm. Thank you.</p>
                     <button onclick="showLanding()" class="px-10 py-3 bg-purple-oven text-white font-medium rounded-full hover:bg-indigo-700 transition shadow-lg">Return to Home</button>
-                </div>
-            `;
-        }
-
-        function renderAdmin() {
-            return `
-                <div class="w-full max-w-6xl animate-fadeIn p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold">Admin Logs (Raw Data)</h2>
-                        <div class="flex gap-4">
-                            <button onclick="downloadCSV()" class="px-6 py-2 bg-green-600 text-white rounded-full font-bold shadow hover:bg-green-700 transition">Download CSV</button>
-                            <button onclick="showLanding()" class="px-6 py-2 border border-gray-300 rounded-full font-bold hover:bg-gray-100 transition">Close</button>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-lg border overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-gray-50 border-b">
-                                <tr>
-                                    <th class="p-4">OrderID</th>
-                                    <th class="p-4">Customer</th>
-                                    <th class="p-4">Mobile</th>
-                                    <th class="p-4">Type</th>
-                                    <th class="p-4">Location</th>
-                                    <th class="p-4">Items</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${state.adminData.map(o => `
-                                    <tr class="border-b hover:bg-gray-50">
-                                        <td class="p-4 font-bold text-purple-oven">${o.order_id}</td>
-                                        <td class="p-4">${o.customer_name}</td>
-                                        <td class="p-4">${o.customer_mobile}</td>
-                                        <td class="p-4">${o.order_type}</td>
-                                        <td class="p-4">${o.location}</td>
-                                        <td class="p-4 truncate max-w-xs">${o.order_summary}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             `;
         }
