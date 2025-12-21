@@ -226,6 +226,23 @@
         const PO_LOGO_URL = "purple_oven.png";
 
         // --- Firebase Configuration ---
+        // !!! IMPORTANT FOR GITHUB/EXTERNAL HOSTING !!!
+        // To make the Admin Login work on your own website, you must:
+        // 1. Go to https://console.firebase.google.com/
+        // 2. Create a new project (it's free).
+        // 3. Register a "Web App" in the project settings.
+        // 4. Copy the "firebaseConfig" object they give you.
+        // 5. Paste it inside the 'manualConfig' variable below.
+        
+        const manualConfig = {
+            // apiKey: "YOUR_API_KEY",
+            // authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            // projectId: "YOUR_PROJECT_ID",
+            // storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            // messagingSenderId: "...",
+            // appId: "..."
+        };
+
         let firebaseConfig = {};
         let appId = 'purple-oven-app';
         let isFirebaseAvailable = false;
@@ -233,18 +250,26 @@
 
         try {
             if (typeof __firebase_config !== 'undefined') {
+                // Running in Canvas Environment (Automatic)
                 firebaseConfig = JSON.parse(__firebase_config);
                 appId = typeof __app_id !== 'undefined' ? __app_id : appId;
-                
+                isFirebaseAvailable = true;
+            } else if (manualConfig.apiKey) {
+                // Running Externally (GitHub/Local) with Manual Config
+                firebaseConfig = manualConfig;
+                isFirebaseAvailable = true;
+            }
+
+            if (isFirebaseAvailable) {
                 app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
-                isFirebaseAvailable = true;
             } else {
-                console.warn("Running outside Canvas Environment: Firebase Config missing. Admin logs will be disabled.");
+                console.warn("Firebase Config missing. Admin logs and Order ID generation will be local/random.");
             }
         } catch (e) {
             console.warn("Error initializing Firebase:", e);
+            isFirebaseAvailable = false;
         }
 
         // --- EmailJS Configuration ---
@@ -360,7 +385,7 @@
             const pin = prompt("Enter Admin Password:");
             if (pin === "Strawberrykisses") {
                 if (!isFirebaseAvailable) {
-                    alert("Database not connected. Cannot fetch logs in this environment.");
+                    alert("⚠️ Database Connection Missing\n\nBecause this file is running outside of the Canvas environment (e.g., on GitHub), it cannot access the internal database credentials.\n\nTo fix this:\n1. Open the code file.\n2. Look for the 'manualConfig' variable.\n3. Paste your own Firebase project configuration there.");
                     return;
                 }
                 state.view = 'admin';
