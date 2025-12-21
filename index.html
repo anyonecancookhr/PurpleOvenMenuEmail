@@ -212,7 +212,7 @@
             </div>
             <div class="mt-10 flex flex-col items-center gap-4 text-center text-xs text-gray-500 border-t pt-6">
                 <p>© 2025 Purple Oven. All rights reserved.</p>
-                <button onclick="showAdminPrompt()" class="text-gray-300 hover:text-purple-oven transition rounded-full border border-transparent px-3 py-1 hover:border-purple-100">Admin Logs</button>
+                <button onclick="showAdminPrompt()" class="text-gray-500 font-medium hover:text-purple-oven transition rounded-full border border-transparent px-3 py-1 hover:border-purple-100">Admin Logs</button>
             </div>
         </div>
     </footer>
@@ -226,11 +226,26 @@
         const PO_LOGO_URL = "purple_oven.png";
 
         // --- Firebase Configuration ---
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'purple-oven-app';
+        let firebaseConfig = {};
+        let appId = 'purple-oven-app';
+        let isFirebaseAvailable = false;
+        let app, auth, db;
+
+        try {
+            if (typeof __firebase_config !== 'undefined') {
+                firebaseConfig = JSON.parse(__firebase_config);
+                appId = typeof __app_id !== 'undefined' ? __app_id : appId;
+                
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                isFirebaseAvailable = true;
+            } else {
+                console.warn("Running outside Canvas Environment: Firebase Config missing. Admin logs will be disabled.");
+            }
+        } catch (e) {
+            console.warn("Error initializing Firebase:", e);
+        }
 
         // --- EmailJS Configuration ---
         const EMAILJS_PUBLIC_KEY = "zipf8D6huE9iUliyx"; 
@@ -249,21 +264,28 @@
         };
 
         const initAuth = async () => {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
+            if (!isFirebaseAvailable) return;
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (e) {
+                console.error("Auth failed:", e);
             }
         };
         initAuth();
-        onAuthStateChanged(auth, (user) => { state.user = user; });
+        if (isFirebaseAvailable) {
+            onAuthStateChanged(auth, (user) => { state.user = user; });
+        }
 
         // --- Sequential ID with Date Prefix ---
         async function getOrderNumber() {
             const now = new Date();
             const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
             
-            if (!state.user) return `${dateStr}-${Math.floor(Math.random() * 1000)}`;
+            if (!state.user || !isFirebaseAvailable) return `${dateStr}-${Math.floor(Math.random() * 1000)}`;
 
             const counterDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'counters', 'orders');
             
@@ -337,6 +359,10 @@
         window.showAdminPrompt = () => {
             const pin = prompt("Enter Admin Password:");
             if (pin === "Strawberrykisses") {
+                if (!isFirebaseAvailable) {
+                    alert("Database not connected. Cannot fetch logs in this environment.");
+                    return;
+                }
                 state.view = 'admin';
                 loadAdminData();
             } else if (pin !== null) {
@@ -345,7 +371,7 @@
         };
 
         async function loadAdminData() {
-            if (!state.user) return;
+            if (!state.user || !isFirebaseAvailable) return;
             render(); 
             const ordersRef = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
             try {
@@ -662,7 +688,11 @@
 
             try {
                 // Log to Firestore first
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'orders'), firestoreData);
+                if (isFirebaseAvailable) {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'orders'), firestoreData);
+                } else {
+                    console.warn("Firestore not available. Order logged locally only.");
+                }
                 // Send email
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams);
                 
@@ -671,6 +701,7 @@
                 render();
             } catch (err) {
                 alert("Submission failed. Please call us.");
+                console.error(err);
             } finally {
                 state.isSubmitting = false;
                 document.getElementById('loadingOverlay').classList.add('hidden');
