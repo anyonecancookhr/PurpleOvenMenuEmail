@@ -14,12 +14,6 @@
     <!-- REQUIRED: EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-    <!-- REQUIRED: Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js" type="module"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js" type="module"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js" type="module"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js" type="module"></script>
-
     <style>
         :root {
             --purple-oven: #5D3FD3;
@@ -217,62 +211,9 @@
         </div>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, collection, addDoc, getDocs, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
-
+    <script type="text/javascript">
         // --- Constants ---
         const PO_LOGO_URL = "purple_oven.png";
-
-        // --- Firebase Configuration ---
-        // !!! IMPORTANT FOR GITHUB/EXTERNAL HOSTING !!!
-        // To generate strictly sequential order numbers (1001, 1002...) and use Storage, you MUST connect a database.
-        // 1. Go to https://console.firebase.google.com/
-        // 2. Create a new project (it's free).
-        // 3. Register a "Web App" in the project settings.
-        // 4. Copy the "firebaseConfig" object they give you.
-        // 5. Paste it inside the 'manualConfig' variable below.
-        
-        const manualConfig = {
-            // apiKey: "YOUR_API_KEY",
-            // authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            // projectId: "YOUR_PROJECT_ID",
-            // storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            // messagingSenderId: "...",
-            // appId: "..."
-        };
-
-        let firebaseConfig = {};
-        let appId = 'purple-oven-app';
-        let isFirebaseAvailable = false;
-        let app, auth, db, storage;
-
-        try {
-            if (typeof __firebase_config !== 'undefined') {
-                // Running in Canvas Environment (Automatic)
-                firebaseConfig = JSON.parse(__firebase_config);
-                appId = typeof __app_id !== 'undefined' ? __app_id : appId;
-                isFirebaseAvailable = true;
-            } else if (manualConfig.apiKey) {
-                // Running Externally (GitHub/Local) with Manual Config
-                firebaseConfig = manualConfig;
-                isFirebaseAvailable = true;
-            }
-
-            if (isFirebaseAvailable) {
-                app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-                storage = getStorage(app);
-            } else {
-                console.warn("Firebase Config missing. Order IDs will be timestamp-based instead of sequential.");
-            }
-        } catch (e) {
-            console.warn("Error initializing Firebase:", e);
-            isFirebaseAvailable = false;
-        }
 
         // --- EmailJS Configuration ---
         const EMAILJS_PUBLIC_KEY = "zipf8D6huE9iUliyx"; 
@@ -286,34 +227,14 @@
             view: 'landing', 
             isSubmitting: false,
             lastOrderDetails: null,
-            user: null,
-            pendingOrderData: null, // Temporary storage for order data before payment
+            pendingOrderData: null,
             totalAmount: 0
         };
 
-        const initAuth = async () => {
-            if (!isFirebaseAvailable) return;
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (e) {
-                console.error("Auth failed:", e);
-            }
-        };
-        initAuth();
-        if (isFirebaseAvailable) {
-            onAuthStateChanged(auth, (user) => { state.user = user; });
-        }
-
-        // --- Sequential ID Logic ---
-        async function getOrderNumber() {
+        // --- Sequential ID Logic (Time-Based) ---
+        function getOrderNumber() {
             // Generate a time-based ID using Hong Kong Time (UTC+8)
             const now = new Date();
-            
-            // Convert current local time to UTC, then add 8 hours for HK/PH time
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
             const hkTime = new Date(utc + (3600000 * 8));
 
@@ -324,14 +245,14 @@
             const minutes = String(hkTime.getMinutes()).padStart(2, '0');
             const seconds = String(hkTime.getSeconds()).padStart(2, '0');
             
-            // Add milliseconds (2 digits) to ensure uniqueness if multiple orders come in at the same second
+            // Add milliseconds (2 digits)
             const ms = String(hkTime.getMilliseconds()).padStart(3, '0').substring(0, 2);
 
             // Format: YYYYMMDD-HHMMSSms (e.g., 20251225-14300512)
             return `${year}${month}${day}-${hours}${minutes}${seconds}${ms}`;
         }
 
-        // --- Data (Added Prices - PLACEHOLDERS: PLEASE EDIT) ---
+        // --- Data (Prices from Uploaded PDF) ---
         const purpleOvenMenuData = [
             {
                 category: "Cakes",
@@ -798,7 +719,7 @@
 
             summary += `\nTOTAL: ₱${state.totalAmount.toLocaleString()}`;
 
-            const orderId = await getOrderNumber();
+            const orderId = getOrderNumber();
 
             // Store data temporarily
             state.pendingOrderData = {
@@ -933,7 +854,7 @@ TOTAL: ₱${state.totalAmount.toLocaleString()}
             document.getElementById('paymentForm').onsubmit = handleFinalSubmission;
         }
 
-        // --- STEP 3: FINAL SUBMIT (Optimized for GitHub + EmailJS + Firebase) ---
+        // --- STEP 3: FINAL SUBMIT (Optimized for PAID EmailJS - No Firebase) ---
         async function handleFinalSubmission(e) {
             e.preventDefault();
             if (state.isSubmitting) return;
@@ -945,46 +866,25 @@ TOTAL: ₱${state.totalAmount.toLocaleString()}
 
             const form = e.target;
             const d = state.pendingOrderData;
-            
-            // Try uploading to Storage first
-            let imageUrl = null;
-            const fileInput = form.payment_proof;
-            
-            if (isFirebaseAvailable && storage && fileInput.files.length > 0) {
-                try {
-                    const file = fileInput.files[0];
-                    const storageRef = ref(storage, 'payment_proofs/' + d.order_id + '_' + file.name);
-                    const snapshot = await uploadBytes(storageRef, file);
-                    imageUrl = await getDownloadURL(snapshot.ref);
-                    
-                    // Append the URL to the email message
-                    form.message.value += `\n\n[PAYMENT PROOF]: ${imageUrl}`;
-                } catch (err) {
-                    console.warn("Storage upload failed, defaulting to attachment only.", err);
-                }
-            }
 
-            // Prepare Firestore data
-            const firestoreData = {
-                ...d,
-                total_amount: state.totalAmount,
-                payment_status: 'Verification Pending',
-                payment_proof_url: imageUrl || 'Attached in Email',
-                createdAt: serverTimestamp()
-            };
-
+            // STRATEGY: 
+            // 1. Try sending via emailjs.sendForm (supports attachments)
+            // 2. If it fails (file too large, etc.), retry as Text Only
+            
             try {
-                // 1. Save to Firestore (Log the order)
-                if (isFirebaseAvailable) {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'orders'), firestoreData);
-                }
-
-                // 2. SMART EMAIL SENDING
-                if (imageUrl) {
-                    // OPTION A: Firebase Uploaded Successfully
-                    // Send using .send() (JSON) instead of .sendForm()
-                    // This avoids sending the huge attachment to EmailJS, which often fails on free plans.
-                    const templateParams = {
+                // Primary Method: Send with attachment
+                await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form);
+                
+                state.lastOrderDetails = d;
+                state.view = 'success';
+                render();
+            } catch (err) {
+                console.error("Attachment failed. Retrying as text-only...", err);
+                
+                // Fallback Method: Text Only (If file is > 10MB-20MB and fails to attach)
+                // This ensures the order is ALWAYS received, even if the image is dropped.
+                try {
+                    const fallbackParams = {
                         order_id: d.order_id,
                         customer_name: d.customer_name,
                         customer_mobile: d.customer_mobile,
@@ -993,23 +893,17 @@ TOTAL: ₱${state.totalAmount.toLocaleString()}
                         order_date: d.order_date,
                         order_time: d.order_time,
                         order_summary: d.order_summary,
-                        message: form.message.value
+                        message: form.message.value + "\n\n[SYSTEM NOTE]: Payment proof image could not be attached (File likely too large). Please check Viber for proof."
                     };
-                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-
-                } else {
-                    // OPTION B: Firebase Failed or Config Missing
-                    // Fallback to sending the form with the attachment. 
-                    // (Might fail if file > 50kb on free plan, but better than nothing)
-                    await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form);
+                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, fallbackParams);
+                    
+                    state.lastOrderDetails = d;
+                    state.view = 'success';
+                    render();
+                } catch (fatalErr) {
+                    console.error("Critical Failure:", fatalErr);
+                    alert("We encountered an error sending your order. Please check your internet connection.");
                 }
-                
-                state.lastOrderDetails = d;
-                state.view = 'success';
-                render();
-            } catch (err) {
-                console.error(err);
-                alert("Failed to send order. Please check your internet connection, image size, or try again.");
             } finally {
                 state.isSubmitting = false;
                 document.getElementById('loadingOverlay').classList.add('hidden');
