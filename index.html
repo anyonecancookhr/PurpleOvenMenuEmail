@@ -29,7 +29,6 @@
         details[open] > summary .summary-icon { transform: rotate(180deg); }
         .summary-icon { transition: transform 0.3s ease; }
         .notice-box { background-color: #FAF5FF; border: 1px solid #E9D5FF; border-radius: 0.75rem; }
-        .option-box { background-color: #F3E8FF; border-radius: 0.5rem; }
         .spinner { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid white; width: 20px; height: 20px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         input[type="checkbox"]:checked { background-color: var(--purple-oven); border-color: var(--purple-oven); }
@@ -50,89 +49,38 @@
             <div class="flex flex-col md:flex-row gap-10">
                 <div class="md:w-2/3">
                     <h3 class="text-xl font-bold mb-6 text-purple-oven flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
                         Locations & Hours
                     </h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-sm">
                         <div>
                             <p class="font-bold text-gray-800 mb-2 border-b border-gray-300 pb-1">Metro Manila 8AM – 9PM</p>
                             <div class="space-y-3">
-                                <div>
-                                    <p class="font-semibold text-purple-oven">Pasig</p>
-                                    <ul class="ml-2 space-y-1">
-                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Pasig" target="_blank" class="hover:underline">Portico</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-purple-oven">Makati</p>
-                                    <ul class="ml-2 space-y-1">
-                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+San+Antonio" target="_blank" class="hover:underline">San Antonio Plaza Arcade</a></li>
-                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Legazpi+Village" target="_blank" class="hover:underline">Legaspi Street</a></li>
-                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Sacred+Heart" target="_blank" class="hover:underline">Sacred Heart Street</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-purple-oven">Quezon City</p>
-                                    <ul class="ml-2 space-y-1">
-                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Temple+Drive" target="_blank" class="hover:underline">Temple Drive</a></li>
-                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Scout+Rallos" target="_blank" class="hover:underline">Scout Rallos</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-purple-oven">Alabang</p>
-                                    <ul class="ml-2 space-y-1">
-                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Alabang" target="_blank" class="hover:underline">Alabang Town Center</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-purple-oven">San Juan</p>
-                                    <ul class="ml-2 space-y-1">
-                                        <li>- <a href="https://www.google.com/maps/search/Purple+Oven+San+Juan" target="_blank" class="hover:underline">Santolan Town Plaza</a></li>
-                                    </ul>
-                                </div>
+                                <p class="font-semibold text-purple-oven">Pasig, Makati, Quezon City, Alabang, San Juan</p>
+                                <p class="text-xs text-gray-500">Check Google Maps for exact branch locations.</p>
                             </div>
                         </div>
                         <div>
                             <p class="font-bold text-gray-800 mb-2 border-b border-gray-300 pb-1">Laguna 9AM – 9PM</p>
-                            <div class="space-y-3">
-                                <ul class="ml-2 space-y-1">
-                                    <li>- <a href="https://www.google.com/maps/search/Purple+Oven+Santa+Rosa+Laguna" target="_blank" class="hover:underline">Santa Rosa</a></li>
-                                </ul>
-                            </div>
+                            <p>Santa Rosa</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="md:w-1/3 md:border-l md:border-gray-300 md:pl-10">
-                    <h3 class="text-xl font-bold mb-6 text-purple-oven flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        Contact Us
-                    </h3>
+                    <h3 class="text-xl font-bold mb-6 text-purple-oven flex items-center gap-2">Contact Us</h3>
                     <p class="text-sm text-gray-500 mb-6 font-medium">9AM to 6PM</p>
                     <div class="space-y-4">
-                        <div class="flex flex-col">
+                         <div class="flex flex-col">
                             <span class="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-1">Landline</span>
-                            <a href="tel:+63286314221" class="text-lg text-purple-oven font-bold hover:bg-purple-50 p-2 rounded-full transition-colors inline-block border border-transparent hover:border-purple-100 px-4">
-                                +632 8631 4221
-                            </a>
+                            <a href="tel:+63286314221" class="text-lg text-purple-oven font-bold hover:bg-purple-50 p-2 rounded-full transition-colors inline-block border border-transparent hover:border-purple-100 px-4">+632 8631 4221</a>
                         </div>
                         <div class="flex flex-col">
                             <span class="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-1">Viber / Mobile</span>
-                            <a href="tel:+639177103227" class="text-lg text-purple-oven font-bold hover:bg-purple-50 p-2 rounded-full transition-colors inline-block border border-transparent hover:border-purple-100 px-4">
-                                +63917 710 3227
-                            </a>
+                            <a href="tel:+639177103227" class="text-lg text-purple-oven font-bold hover:bg-purple-50 p-2 rounded-full transition-colors inline-block border border-transparent hover:border-purple-100 px-4">+63917 710 3227</a>
                         </div>
                         <div class="flex flex-col pt-2">
                             <span class="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-1 px-4">Email</span>
-                            <a href="mailto:orderonline@purpleoven.com.ph" class="text-base text-gray-700 font-medium hover:text-purple-oven break-all hover:underline px-4">
-                                orderonline@purpleoven.com.ph
-                            </a>
+                            <a href="mailto:orderonline@purpleoven.com.ph" class="text-base text-gray-700 font-medium hover:text-purple-oven break-all hover:underline px-4">orderonline@purpleoven.com.ph</a>
                         </div>
                     </div>
                 </div>
@@ -146,8 +94,6 @@
     <script type="text/javascript">
         // --- Constants ---
         const PO_LOGO_URL = "purple_oven.png";
-
-        // --- EmailJS Configuration ---
         const EMAILJS_PUBLIC_KEY = "zipf8D6huE9iUliyx";
         const EMAILJS_SERVICE_ID = "service_ovc10mr";
         const EMAILJS_TEMPLATE_ID = "template_99fgo0t";
@@ -163,12 +109,10 @@
             totalAmount: 0
         };
 
-        // --- Sequential ID Logic ---
         function getOrderNumber() {
             const now = new Date();
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
             const hkTime = new Date(utc + (3600000 * 8));
-
             const year = hkTime.getFullYear();
             const month = String(hkTime.getMonth() + 1).padStart(2, '0');
             const day = String(hkTime.getDate()).padStart(2, '0');
@@ -176,91 +120,107 @@
             const minutes = String(hkTime.getMinutes()).padStart(2, '0');
             const seconds = String(hkTime.getSeconds()).padStart(2, '0');
             const ms = String(hkTime.getMilliseconds()).padStart(3, '0').substring(0, 2);
-
             return `${year}${month}${day}-${hours}${minutes}${seconds}${ms}`;
         }
 
-        // --- Data ---
+        // --- ASSORTED POOL DEFINITION ---
+        const assortedPool = [
+            { name: "Little Carrot Cake", price: 210 },
+            { name: "Chocolate Lava Cake", price: 210 },
+            { name: "Little Banoffee Pie", price: 210 },
+            { name: "Little Apple Crumb Pie", price: 240 },
+            { name: "Little Pecan Pie", price: 240 }
+        ];
+
+        // --- MENU DATA ---
         const purpleOvenMenuData = [
             {
                 category: "Cakes",
                 subCategories: [
                     { name: "Light Cakes (8 In)", items: [
-                        { name: "Honeycomb Crunch Cake - whole", price: 1230 },
-                        { name: "Pistachio Stardust - whole", price: 1230 },
-                        { name: "Chocolate Honeycomb Crunch Cake - whole", price: 1230 },
+                        { name: "Honeycomb Crunch Cake - whole", price: 1230 }, 
+                        { name: "Pistachio Stardust - whole", price: 1230 }, 
+                        { name: "Chocolate Honeycomb Crunch Cake - whole", price: 1230 }, 
                         { name: "Strawberry Kisses - whole", price: 1300 }
                     ] },
                     { name: "Cakes with Nutty Layers (8 In)", items: [
-                        { name: "Classic Sans Rival - whole", price: 1180 },
-                        { name: "Dark Mocha Sans Rival - whole", price: 1300 },
-                        { name: "White Chocolate Sans Rival - whole", price: 1300 },
-                        { name: "Rustic Chocolate Torte - whole", price: 1300 },
-                        { name: "Merry Cherry Torte - whole", price: 1300 },
-                        { name: "Mango Walnut Torte - whole", price: 1300 },
+                        { name: "Classic Sans Rival - whole", price: 1180 }, 
+                        { name: "Dark Mocha Sans Rival - whole", price: 1300 }, 
+                        { name: "White Chocolate Sans Rival - whole", price: 1300 }, 
+                        { name: "Rustic Chocolate Torte - whole", price: 1300 }, 
+                        { name: "Merry Cherry Torte - whole", price: 1300 }, 
+                        { name: "Mango Walnut Torte - whole", price: 1300 }, 
                         { name: "Lemon Torte - whole", price: 1300 }
                     ] },
                     { name: "Chocolate Cakes (8 In)", items: [
-                        { name: "Grandma’s Chocolate Cake - whole", price: 1020 },
-                        { name: "Chocolate Dome Cake - whole", price: 1020 },
-                        { name: "Chocolate Campfire - whole", price: 1180 },
-                        { name: "Classic Chocolate Cake - whole", price: 1000 },
+                        { name: "Grandma’s Chocolate Cake - whole", price: 1020 }, 
+                        { name: "Chocolate Dome Cake - whole", price: 1020 }, 
+                        { name: "Chocolate Campfire - whole", price: 1180 }, 
+                        { name: "Classic Chocolate Cake - whole", price: 1000 }, 
                         { name: "Caramel Sauce - whole", price: 230 }
                     ] },
                     { name: "Cheesecakes (8 In)", items: [
-                        { name: "New York Cheesecake - whole", price: 1510 },
-                        { name: "Blueberry Cheesecake - whole", price: 1510 },
+                        { name: "New York Cheesecake - whole", price: 1510 }, 
+                        { name: "Blueberry Cheesecake - whole", price: 1510 }, 
                         { name: "Oreo Cheesecake - whole", price: 1510 }
                     ] },
                     { name: "Tub Desserts (8x14 In)", items: [
-                        { name: "Tiramisu - whole", price: 0 },
-                        { name: "Strawberries and Cream - whole", price: 0 }
+                        { name: "Tiramisu - whole", price: 1730 }, 
+                        { name: "Strawberries and Cream - whole", price: 1730 }
                     ] },
                     { name: "Pies (9 In)", items: [
-                        { name: "Apple Crumb Pie - whole", price: 0 },
-                        { name: "Banoffee Pie - whole", price: 0 }
+                        { name: "Apple Crumb Pie - whole", price: 1140 }, 
+                        { name: "Banoffee Pie - whole", price: 1140 }
                     ] },
                     { name: "Little Cakes and Pies", items: [
-                        { name: "Little Carrot Cake - pc", price: 0 },
-                        { name: "Chocolate Lava Cake - pc", price: 0 },
-                        { name: "Little Banoffee Pie - pc", price: 0 },
-                        { name: "Little Apple Crumb Pie - pc", price: 0 },
-                        { name: "Little Pecan Pie - pc", price: 0 }
+                        // Individual Items
+                        { name: "Little Carrot Cake - pc", price: 210 }, 
+                        { name: "Chocolate Lava Cake - pc", price: 210 }, 
+                        { name: "Little Banoffee Pie - pc", price: 210 }, 
+                        { name: "Little Apple Crumb Pie - pc", price: 240 }, 
+                        { name: "Little Pecan Pie - pc", price: 240 },
+                        
+                        // Smart Assorted Option
+                        { 
+                            name: "Assorted Little Cakes/Pies - box of 6", 
+                            price: 1260, 
+                            type: "assorted_box_6" // Flag for special logic
+                        }
                     ] }
                 ]
             },
             {
                 category: "Bars",
                 subCategories: [{ name: "", items: [
-                    { name: "Mango Bars Half - 16pc", price: 0 }, { name: "Mango Bars Whole - 32pc", price: 0 },
-                    { name: "Lemon Bars Half - 16pc", price: 0 }, { name: "Lemon Bars Whole - 32pc", price: 0 },
-                    { name: "Double Chocolate Brownies Half - 16pc", price: 0 }, { name: "Double Chocolate Brownies Whole - 32pc", price: 0 },
-                    { name: "Fudge Brownies Half - 16pc", price: 0 }, { name: "Fudge Brownies Whole - 32pc", price: 0 },
-                    { name: "Food for the Gods Half - 16pc", price: 0 }, { name: "Food for the Gods Whole - 32pc", price: 0 },
-                    { name: "Chocolate Revel Bars Half - 16pc", price: 0 }, { name: "Chocolate Revel Bars Whole - 32pc", price: 0 }
+                    { name: "Mango Bars Half - 16pc", price: 490 }, { name: "Mango Bars Whole - 32pc", price: 920 }, 
+                    { name: "Lemon Bars Half - 16pc", price: 490 }, { name: "Lemon Bars Whole - 32pc", price: 920 }, 
+                    { name: "Double Chocolate Brownies Half - 16pc", price: 490 }, { name: "Double Chocolate Brownies Whole - 32pc", price: 920 }, 
+                    { name: "Fudge Brownies Half - 16pc", price: 490 }, { name: "Fudge Brownies Whole - 32pc", price: 920 }, 
+                    { name: "Food for the Gods Half - 16pc", price: 490 }, { name: "Food for the Gods Whole - 32pc", price: 920 }, 
+                    { name: "Chocolate Revel Bars Half - 16pc", price: 490 }, { name: "Chocolate Revel Bars Whole - 32pc", price: 920 }
                 ] }]
             },
             {
                 category: "Cookies",
                 subCategories: [{ name: "", items: [
-                    { name: "Chocolate Macadamia Cookie - pc", price: 0 }, { name: "White Chocolate Cashew Cookie - pc", price: 0 },
-                    { name: "Chocolate Dipped Cookie - pc", price: 0 }, { name: "Double Chocolate Chip Cookie - pc", price: 0 },
-                    { name: "Reese’s Peanut Butter Chip Cookie - pc", price: 0 }, { name: "White Chunk Chocolate Cookie - pc", price: 0 },
-                    { name: "Oatmeal Raisin Cookie - pc", price: 0 }, { name: "Chocolate Crinkles - box of 12", price: 0 }
+                    { name: "Chocolate Macadamia Cookie - pc", price: 100 }, { name: "White Chocolate Cashew Cookie - pc", price: 100 }, 
+                    { name: "Chocolate Dipped Cookie - pc", price: 100 }, { name: "Double Chocolate Chip Cookie - pc", price: 100 }, 
+                    { name: "Reese’s Peanut Butter Chip Cookie - pc", price: 100 }, { name: "White Chunk Chocolate Cookie - pc", price: 100 }, 
+                    { name: "Oatmeal Raisin Cookie - pc", price: 100 }, { name: "Chocolate Crinkles - box of 12", price: 490 }
                 ] }]
             },
             {
                 category: "Loaves",
                 subCategories: [{ name: "", items: [
-                    { name: "Banana Loaf - loaf", price: 0 }, { name: "Carrot Walnut Loaf - loaf", price: 0 },
-                    { name: "Orange Almond Loaf - loaf", price: 0 }, { name: "Pistachio Lime Loaf - loaf", price: 0 },
-                    { name: "Chocolate Banana Walnut Loaf - loaf", price: 0 }
+                    { name: "Banana Loaf - loaf", price: 490 }, { name: "Carrot Walnut Loaf - loaf", price: 490 }, 
+                    { name: "Orange Almond Loaf - loaf", price: 530 }, { name: "Pistachio Lime Loaf - loaf", price: 530 }, 
+                    { name: "Chocolate Banana Walnut Loaf - loaf", price: 530 }
                 ] }]
             },
             {
                 category: "Snack Packs",
                 subCategories: [{ name: "", items: [
-                    { name: "Chocolate Carousel - pack", price: 0 }, { name: "Purple Crumble - pack", price: 0 }
+                    { name: "Chocolate Carousel - pack", price: 260 }, { name: "Purple Crumble - pack", price: 230 }
                 ] }]
             },
             {
@@ -268,30 +228,30 @@
                 subCategories: [
                     { name: "Quiches", items: [{ name: "Broccoli and Cheese Quiche - pc", price: 145 }, { name: "Quiche Lorraine - pc", price: 145 }] },
                     { name: "Flaky Pastries", items: [
-                        { name: "Chicken Curry Turnover - pc", price: 120 }, { name: "Chili con Carne Turnover - pc", price: 120 },
-                        { name: "Chorizo Roll - pc", price: 120 }, { name: "Sausage Puff - pc", price: 120 },
+                        { name: "Chicken Curry Turnover - pc", price: 120 }, { name: "Chili con Carne Turnover - pc", price: 120 }, 
+                        { name: "Chorizo Roll - pc", price: 120 }, { name: "Sausage Puff - pc", price: 120 }, 
                         { name: "Spinach Danish - pc", price: 120 }, { name: "Tuna Turnover - pc", price: 120 }
                     ] },
                     { name: "Soft Savory Buns", items: [
-                        { name: "Adobo Flakes Bun - pc", price: 100 }, { name: "Pork Asado Bun - pc", price: 100 },
-                        { name: "Corned Beef Bun - pc", price: 100 }, { name: "Tuna Bun - pc", price: 100 },
+                        { name: "Adobo Flakes Bun - pc", price: 100 }, { name: "Pork Asado Bun - pc", price: 100 }, 
+                        { name: "Corned Beef Bun - pc", price: 100 }, { name: "Tuna Bun - pc", price: 100 }, 
                         { name: "Ham and Cheese Bun - pc", price: 100 }, { name: "Sausage Bun - pc", price: 100 }
                     ] },
                     { name: "Croissants", items: [
-                        { name: "Butter Croissant - pc", price: 0 }, { name: "Ham and Cheese Croissant - pc", price: 135 }, { name: "Chocolate Croissant - pc", price: 0 }
+                        { name: "Butter Croissant - pc", price: 100 }, { name: "Ham and Cheese Croissant - pc", price: 135 }, { name: "Chocolate Croissant - pc", price: 110 }
                     ] },
                     { name: "Sweet Breads", items: [
-                        { name: "Cheese Roll - pc", price: 0 }, { name: "Ensaymada - pc", price: 0 }, { name: "Soft Cinnamon Roll - pc", price: 0 }
+                        { name: "Cheese Roll - pc", price: 95 }, { name: "Ensaymada - pc", price: 110 }, { name: "Soft Cinnamon Roll - pc", price: 110 }
                     ] },
                     { name: "Artisan Breads", items: [
-                        { name: "Cinnamon Raisin Pretzel - pc", price: 0 }, { name: "Parmesan Pretzel - pc", price: 0 },
-                        { name: "Sourdough - loaf", price: 0 }, { name: "Raisin Bread - loaf", price: 0 }
+                        { name: "Cinnamon Raisin Pretzel - pc", price: 120 }, { name: "Parmesan Pretzel - pc", price: 120 }, 
+                        { name: "Sourdough - loaf", price: 260 }, { name: "Raisin Bread - loaf", price: 390 }
                     ] }
                 ]
             },
             {
                 category: "Reusable Bag",
-                subCategories: [{ name: "", items: [{ name: "Large Bag - pc", price: 0 }, { name: "Small Bag - pc", price: 0 }] }]
+                subCategories: [{ name: "", items: [{ name: "Large Bag - pc", price: 25 }, { name: "Small Bag - pc", price: 20 }] }]
             }
         ];
 
@@ -318,8 +278,8 @@
                 <div class="text-center animate-fadeIn w-full max-w-2xl flex flex-col items-center">
                     <img src="${PO_LOGO_URL}" alt="Purple Oven" class="mx-auto mb-6 h-auto max-h-[200px] w-auto">
                     <p class="text-xl text-gray-600 mb-10 max-w-xl leading-relaxed">
-                        At Purple Oven, we bake all day everyday with real eggs, cream, and butter.
-                        And we serve them while they’re at their best.
+                        At Purple Oven, we bake all day everyday with real eggs, cream, and butter. 
+                        And we serve them while they’re at their best. 
                         It makes us happy to have you bring home the freshest and finest products we can offer.
                     </p>
                     <button onclick="showMenu()" class="px-10 py-4 text-lg font-semibold text-white rounded-full bg-purple-oven hover:bg-indigo-700 transition shadow-lg transform hover:scale-105">
@@ -364,20 +324,19 @@
                             <div class="space-y-4">
                                 <div class="bg-purple-100/50 p-4 rounded-lg border border-purple-200 shadow-inner">
                                     <h4 class="font-bold text-purple-800">Option 1: Call Us</h4>
-                                    <p class="text-sm mb-2">For orders today, please give us a call.</p>
-                                    <div class="text-sm space-y-1">
+                                    <div class="text-sm space-y-1 mt-2">
                                         <p><span class="font-semibold text-gray-600">Landline:</span> <a href="tel:+63286314221" class="font-bold text-purple-700 hover:underline">+632 8631 4221</a></p>
                                         <p><span class="font-semibold text-gray-600">Mobile / Viber:</span> <a href="tel:+639177103227" class="font-bold text-purple-700 hover:underline">+63917 710 3227</a></p>
                                     </div>
                                 </div>
                                 <div class="bg-purple-100/50 p-4 rounded-lg border border-purple-200 shadow-inner">
                                     <h4 class="font-bold text-purple-800">Option 2: Order Online</h4>
-                                    <p class="text-sm">For orders from tomorrow onwards, please provide us with the details below, until 2PM today.</p>
-                                    <p class="text-sm mt-2">We will contact you as soon as we can confirm your order.</p>
+                                    <p class="text-sm mt-1">For orders from tomorrow onwards.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="p-6 sm:p-10 space-y-8">
+                            <!-- DETAILS -->
                             <div class="space-y-4">
                                 <h3 class="font-bold border-b pb-2">Customer Details</h3>
                                 <div class="form-grid">
@@ -392,12 +351,7 @@
                                     <label><input type="radio" name="orderType" value="Pick Up" checked class="h-5 w-5 text-purple-600"> Pick Up</label>
                                     ${isDeliveryEnabled ? `
                                     <label><input type="radio" name="orderType" value="Delivery" class="h-5 w-5 text-purple-600"> Delivery</label>
-                                    ` : `
-                                    <label class="text-gray-400 cursor-not-allowed flex items-center gap-2">
-                                        <input type="radio" name="orderType" value="Delivery" class="h-5 w-5 text-gray-300" disabled>
-                                        Delivery (Temporarily Unavailable)
-                                    </label>
-                                    `}
+                                    ` : ''}
                                 </div>
                                 <select id="pickupSelect" name="pickupLocation" class="w-full p-3 border rounded-lg"><option value="" disabled selected>Select branch...</option>${pickUpLocations.map(l => `<option value="${l}">${l}</option>`).join('')}</select>
                                 <div id="deliveryFields" class="hidden space-y-2">
@@ -419,12 +373,13 @@
                                 </div>
                             </div>
 
+                            <!-- MENU SELECTION -->
                             <div>
                                 <h3 class="font-bold border-b pb-2 mb-4">Select Items</h3>
-                                <p class="text-sm text-gray-600 mb-4 italic">Please check on the product(s) of your choice and indicate the quantity to order.</p>
                                 <div id="itemSelection"></div>
                             </div>
 
+                            <!-- FOOTER / TOTAL -->
                             <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-10 flex justify-between items-center sm:hidden">
                                 <div>
                                     <p class="text-xs text-gray-500">Total Amount</p>
@@ -441,9 +396,7 @@
                                 <button type="submit" id="submitBtn" class="py-3 px-10 bg-purple-oven text-white font-bold text-xl rounded-full hover:bg-indigo-800 transition shadow-lg">Submit Order</button>
                             </div>
                             
-                            <!-- Spacer for mobile footer -->
                             <div class="h-20 sm:hidden"></div>
-
                         </div>
                     </form>
                 </div>
@@ -457,7 +410,6 @@
             const pickup = document.getElementById('pickupSelect');
             const deliveryFields = document.getElementById('deliveryFields');
             const deliveryInput = document.getElementById('deliveryInput');
-            const landmarkInput = document.getElementById('landmarkInput');
             const giftContainer = document.getElementById('giftContainer');
             const giftToggle = document.getElementById('giftToggle');
             const giftFields = document.getElementById('giftFields');
@@ -480,14 +432,14 @@
                 };
             });
             giftToggle.onchange = (e) => giftFields.classList.toggle('hidden', !e.target.checked);
+            
             if (document.getElementById('mobileSubmitBtn')) {
                 document.getElementById('mobileSubmitBtn').onclick = (e) => {
-                    // Trigger form submission manually for the separate button
                     if(form.reportValidity()) form.dispatchEvent(new Event('submit'));
                 };
             }
 
-            // --- Menu Rendering with Prices ---
+            // --- Menu Rendering ---
             let menuHtml = '';
             purpleOvenMenuData.forEach((cat, ci) => {
                 menuHtml += `<div class="mb-4 border border-gray-200 rounded-lg overflow-hidden">
@@ -508,25 +460,57 @@
                 cat.subCategories.forEach((sub, si) => {
                     const renderItems = (items) => items.map((item, ii) => {
                         const id = `item_${ci}_${si}_${ii}`;
-                        const parts = item.name.split(" - ");
-                        const itemName = parts[0];
-                        const itemUnit = parts.length > 1 ? parts.slice(1).join(" - ") : "";
+                        const isAssorted = item.type === "assorted_box_6";
+                        const itemName = item.name;
                         const itemPrice = item.price || 0;
                         
-                        return `
-                        <div class="grid grid-cols-[24px_1fr_auto_60px] gap-3 items-center py-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-                            <input type="checkbox" id="${id}" name="orderItem" value="${item.name}" data-price="${itemPrice}"
-                                class="w-5 h-5 text-purple-600 rounded focus:ring-purple-500 cursor-pointer border-gray-300 item-checkbox">
-                            
-                            <label for="${id}" class="text-sm text-gray-700 font-medium cursor-pointer select-none">
-                                ${itemName}
-                                ${itemUnit ? `<span class="block text-xs text-gray-400 font-normal">${itemUnit}</span>` : ''}
-                            </label>
+                        let extraHtml = '';
+                        
+                        if (isAssorted) {
+                            // GENERATE 6 DROPDOWNS
+                            let selectOptions = assortedPool.map(opt => 
+                                `<option value="${opt.name}|${opt.price}">${opt.name} (₱${opt.price})</option>`
+                            ).join('');
 
-                            <span class="text-sm text-gray-600 font-medium">₱${itemPrice.toLocaleString()}</span>
-                            
-                            <input type="number" id="qty_${id}" name="itemQty" min="1" placeholder="0" disabled
-                                class="w-full text-center border border-gray-300 rounded-md py-1 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 disabled:bg-gray-100 disabled:text-gray-400 item-qty">
+                            let dropdowns = '';
+                            for(let k=1; k<=6; k++) {
+                                dropdowns += `
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-xs text-gray-500 w-4">${k}.</span>
+                                        <select class="assorted-select w-full p-1 border rounded text-xs bg-white" data-parent="${id}">
+                                            <option value="" disabled selected>Select item...</option>
+                                            ${selectOptions}
+                                        </select>
+                                    </div>
+                                `;
+                            }
+
+                            extraHtml = `
+                                <div id="assorted-container-${id}" class="hidden ml-8 mt-2 p-3 bg-purple-50 rounded-lg border border-purple-100">
+                                    <p class="text-xs font-bold text-gray-600 mb-2">Select 6 Items (Max Total Value: ₱1,260)</p>
+                                    ${dropdowns}
+                                    <p id="assorted-msg-${id}" class="text-xs font-bold text-gray-500 mt-2 text-right">Current Value: ₱0</p>
+                                </div>
+                            `;
+                        }
+
+                        return `
+                        <div class="py-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+                            <div class="grid grid-cols-[24px_1fr_auto_60px] gap-3 items-center">
+                                <input type="checkbox" id="${id}" name="orderItem" value="${itemName}" data-price="${itemPrice}"
+                                    data-is-assorted="${isAssorted}"
+                                    class="w-5 h-5 text-purple-600 rounded focus:ring-purple-500 cursor-pointer border-gray-300 item-checkbox">
+                                
+                                <label for="${id}" class="text-sm text-gray-700 font-medium cursor-pointer select-none">
+                                    ${itemName}
+                                </label>
+
+                                <span class="text-sm text-gray-600 font-medium">₱${itemPrice.toLocaleString()}</span>
+                                
+                                <input type="number" id="qty_${id}" name="itemQty" min="1" placeholder="0" disabled
+                                    class="w-full text-center border border-gray-300 rounded-md py-1 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 disabled:bg-gray-100 disabled:text-gray-400 item-qty">
+                            </div>
+                            ${extraHtml}
                         </div>`;
                     }).join('');
 
@@ -545,46 +529,100 @@
                         menuHtml += `<div class="bg-white rounded-lg border border-gray-200 p-2">${renderItems(sub.items)}</div>`;
                     }
                 });
-
                 menuHtml += `</div></details></div>`;
             });
             document.getElementById('itemSelection').innerHTML = menuHtml;
 
-            // --- Dynamic Total Calculation ---
-            const calculateTotal = () => {
-                let total = 0;
-                document.querySelectorAll('.item-checkbox:checked').forEach(cb => {
-                    const price = parseFloat(cb.dataset.price) || 0;
-                    const qtyInput = document.getElementById(`qty_${cb.id}`);
-                    const qty = parseInt(qtyInput.value) || 0;
-                    total += price * qty;
-                });
-                state.totalAmount = total;
-                const formatted = `₱ ${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                if(document.getElementById('mobileTotal')) document.getElementById('mobileTotal').innerText = formatted;
-                if(document.getElementById('desktopTotal')) document.getElementById('desktopTotal').innerText = formatted;
-            };
-
-            // Attach event listeners for calculation
-            document.querySelectorAll('.item-checkbox').forEach(cb => {
+            // --- Logic for Checkboxes & Assorted ---
+            const checkboxes = document.querySelectorAll('.item-checkbox');
+            
+            checkboxes.forEach(cb => {
                 cb.addEventListener('change', (e) => {
-                    const qtyInput = document.getElementById(`qty_${e.target.id}`);
+                    const id = e.target.id;
+                    const qtyInput = document.getElementById(`qty_${id}`);
+                    const isAssorted = e.target.dataset.isAssorted === "true";
+                    
                     qtyInput.disabled = !e.target.checked;
+                    
                     if(e.target.checked) {
-                        qtyInput.value = 1;
-                        qtyInput.focus();
+                        qtyInput.value = 1; 
+                        if(!isAssorted) qtyInput.focus();
                     } else {
                         qtyInput.value = '';
                     }
+
+                    if (isAssorted) {
+                        const container = document.getElementById(`assorted-container-${id}`);
+                        if(e.target.checked) container.classList.remove('hidden');
+                        else container.classList.add('hidden');
+                    }
+                    
                     calculateTotal();
                 });
             });
+
+            // --- Logic for Assorted Dropdowns ---
+            document.querySelectorAll('.assorted-select').forEach(sel => {
+                sel.addEventListener('change', (e) => {
+                    const parentId = e.target.dataset.parent;
+                    validateAssorted(parentId);
+                });
+            });
+
+            // --- Logic for Qty Inputs ---
             document.querySelectorAll('.item-qty').forEach(input => {
                 input.addEventListener('input', calculateTotal);
             });
 
+            calculateTotal(); // Init
+            initDatePicker();
+            form.onsubmit = proceedToPayment;
+        }
 
-            // --- DATE LOGIC ---
+        function validateAssorted(id) {
+            const container = document.getElementById(`assorted-container-${id}`);
+            const msg = document.getElementById(`assorted-msg-${id}`);
+            const selects = container.querySelectorAll('select');
+            
+            let currentTotal = 0;
+            let filledCount = 0;
+
+            selects.forEach(s => {
+                if(s.value) {
+                    const parts = s.value.split('|');
+                    currentTotal += parseInt(parts[1]);
+                    filledCount++;
+                }
+            });
+
+            msg.innerText = `Current Value: ₱${currentTotal.toLocaleString()} / ₱1,260`;
+
+            if(currentTotal > 1260) {
+                msg.classList.remove('text-gray-500', 'text-green-600');
+                msg.classList.add('text-red-600');
+                return false;
+            } else {
+                msg.classList.remove('text-red-600');
+                msg.classList.add('text-green-600');
+                return true;
+            }
+        }
+
+        const calculateTotal = () => {
+            let total = 0;
+            document.querySelectorAll('.item-checkbox:checked').forEach(cb => {
+                const price = parseFloat(cb.dataset.price) || 0;
+                const qtyInput = document.getElementById(`qty_${cb.id}`);
+                const qty = parseInt(qtyInput.value) || 0;
+                total += price * qty;
+            });
+            state.totalAmount = total;
+            const formatted = `₱ ${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            if(document.getElementById('mobileTotal')) document.getElementById('mobileTotal').innerText = formatted;
+            if(document.getElementById('desktopTotal')) document.getElementById('desktopTotal').innerText = formatted;
+        };
+
+        function initDatePicker() {
             const now = new Date();
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
             const hkTime = new Date(utc + (3600000 * 8));
@@ -602,7 +640,6 @@
                 if (currentHour < 14) minDateObj.setDate(hkTime.getDate() + 1);
                 else minDateObj.setDate(hkTime.getDate() + 2);
             }
-
             const minDateStr = minDateObj.toISOString().split('T')[0];
 
             flatpickr("#datePicker", { 
@@ -610,12 +647,7 @@
                 dateFormat: "Y-m-d",
                 disable: [
                     function(date) {
-                        if (
-                            (date.getMonth() === 11 && date.getDate() === 25) || 
-                            (date.getMonth() === 11 && date.getDate() === 26) || 
-                            (date.getMonth() === 11 && date.getDate() === 31) || 
-                            (date.getMonth() === 0 && date.getDate() === 1)
-                        ) return true;
+                        if ((date.getMonth() === 11 && date.getDate() === 25) || (date.getMonth() === 11 && date.getDate() === 26) || (date.getMonth() === 11 && date.getDate() === 31) || (date.getMonth() === 0 && date.getDate() === 1)) return true;
                         if (date.getMonth() === 11 && date.getDate() === 24) {
                             if (hkTime.getMonth() === 11 && hkTime.getDate() === 23 && hkTime.getHours() >= 12) return true;
                             if (hkTime.getMonth() === 11 && hkTime.getDate() >= 24) return true;
@@ -624,14 +656,38 @@
                     }
                 ]
             });
-            form.onsubmit = proceedToPayment;
         }
 
-        // --- STEP 1: VALIDATE & MOVE TO PAYMENT ---
         async function proceedToPayment(e) {
             e.preventDefault();
             const items = document.querySelectorAll('input[name="orderItem"]:checked');
             if (items.length === 0) { alert("Select at least one item."); return; }
+
+            // --- Validate Assorted Boxes ---
+            let validationError = null;
+            items.forEach(cb => {
+                if(cb.dataset.isAssorted === "true") {
+                    const id = cb.id;
+                    const container = document.getElementById(`assorted-container-${id}`);
+                    const selects = container.querySelectorAll('select');
+                    let filled = 0;
+                    let totalVal = 0;
+                    selects.forEach(s => {
+                        if(s.value) {
+                            filled++;
+                            totalVal += parseInt(s.value.split('|')[1]);
+                        }
+                    });
+
+                    if(filled < 6) validationError = "Please select all 6 items for the Assorted Box.";
+                    else if(totalVal > 1260) validationError = "The Assorted Box contents exceed the ₱1,260 limit. Please adjust your selection.";
+                }
+            });
+
+            if(validationError) {
+                alert(validationError);
+                return;
+            }
 
             const fd = new FormData(e.target);
             let summary = "";
@@ -641,15 +697,32 @@
                 const qty = document.getElementById(`qty_${cb.id}`).value;
                 const price = parseFloat(cb.dataset.price) || 0;
                 const subtotal = price * qty;
-                summary += `• ${qty} x ${cb.value} (₱${subtotal.toLocaleString()})\n`;
-                itemsList.push({ name: cb.value, qty, price, subtotal });
+                
+                let lineItem = `• ${qty} x ${cb.value} (₱${subtotal.toLocaleString()})`;
+                
+                // Add details if Assorted
+                if(cb.dataset.isAssorted === "true") {
+                    const id = cb.id;
+                    const container = document.getElementById(`assorted-container-${id}`);
+                    const selects = container.querySelectorAll('select');
+                    let details = [];
+                    selects.forEach(s => {
+                        if(s.value) details.push(s.value.split('|')[0]);
+                    });
+                    // Group duplicates logic
+                    const counts = {};
+                    details.forEach(d => { counts[d] = (counts[d] || 0) + 1; });
+                    let detailStr = Object.entries(counts).map(([k,v]) => `${v} ${k}`).join(', ');
+                    lineItem += `\n   [Selection: ${detailStr}]`;
+                }
+
+                summary += lineItem + "\n";
             });
 
             summary += `\nTOTAL: ₱${state.totalAmount.toLocaleString()}`;
 
             const orderId = getOrderNumber();
 
-            // Store data temporarily
             state.pendingOrderData = {
                 order_id: orderId,
                 customer_name: fd.get('customerName'),
@@ -671,12 +744,9 @@
             render();
         }
 
-        // --- STEP 2: RENDER PAYMENT PAGE ---
         function renderPayment() {
             const root = document.getElementById('app');
             const d = state.pendingOrderData;
-            
-            // Reconstruct location info
             const locationInfo = d.order_type === 'Pick Up' ? `Branch: ${d.location}` : `Address: ${d.location} (Landmark: ${d.landmark})`;
 
             root.innerHTML = `
@@ -690,66 +760,32 @@
                         </div>
                         
                         <div class="p-6 space-y-6">
-                            <!-- Order Summary -->
                             <div class="bg-gray-50 p-4 rounded-lg text-sm">
                                 <h3 class="font-bold text-gray-700 mb-2">Order Summary</h3>
                                 <pre class="whitespace-pre-wrap font-sans text-gray-600">${d.order_summary}</pre>
                             </div>
 
-                            <!-- Bank Details -->
                             <div class="border-t border-b py-6">
                                 <h3 class="font-bold text-lg mb-4">Bank Transfer Details</h3>
                                 <div class="space-y-3 text-sm text-gray-700">
-                                    <div class="flex justify-between border-b pb-2">
-                                        <span>Bank:</span>
-                                        <span class="font-bold">BDO Unibank</span>
-                                    </div>
-                                    <div class="flex justify-between border-b pb-2">
-                                        <span>Account Name:</span>
-                                        <span class="font-bold">Anyone Can Cook Inc.</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span>Account Number:</span>
-                                        <span class="font-bold">011098003452</span>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-2 bg-yellow-50 p-2 rounded">
-                                        Please transfer the exact amount of <span class="font-bold text-purple-oven">₱${state.totalAmount.toLocaleString()}</span>.
-                                    </p>
+                                    <div class="flex justify-between border-b pb-2"><span>Bank:</span><span class="font-bold">BDO Unibank</span></div>
+                                    <div class="flex justify-between border-b pb-2"><span>Account Name:</span><span class="font-bold">Anyone Can Cook Inc.</span></div>
+                                    <div class="flex justify-between"><span>Account Number:</span><span class="font-bold">011098003452</span></div>
+                                    <p class="text-xs text-gray-500 mt-2 bg-yellow-50 p-2 rounded">Please transfer the exact amount of <span class="font-bold text-purple-oven">₱${state.totalAmount.toLocaleString()}</span>.</p>
                                 </div>
                             </div>
 
-                            <!-- Payment Proof Form -->
                             <form id="paymentForm" class="space-y-6" enctype="multipart/form-data">
                                 <div>
                                     <label class="block font-bold text-gray-700 mb-2">Upload Proof of Payment</label>
-                                    
-                                    <!-- CRITICAL: Name set to "payment_proof" to match EmailJS Dashboard -->
-                                    <input type="file" id="fileInput" name="payment_proof" accept="image/*" required 
-                                        class="block w-full text-sm text-slate-500
-                                        file:mr-4 file:py-2 file:px-4
-                                        file:rounded-full file:border-0
-                                        file:text-sm file:font-semibold
-                                        file:bg-purple-50 file:text-purple-700
-                                        hover:file:bg-purple-100">
-                                    
+                                    <input type="file" id="fileInput" name="payment_proof" accept="image/*" required class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
                                     <p id="fileInfo" class="text-xs font-bold text-purple-700 mt-2 hidden"></p>
-
-                                    <p class="text-xs text-gray-500 mt-1">
-                                        <span class="font-bold text-red-500">Note:</span> Please use a screenshot or small image (Max 2MB). Large camera photos may fail to send.
-                                    </p>
+                                    <p class="text-xs text-gray-500 mt-1"><span class="font-bold text-red-500">Note:</span> Please use a screenshot or small image (Max 2MB).</p>
                                 </div>
-
-                                <!-- Hidden Inputs for EmailJS -->
                                 <input type="hidden" name="order_id" value="${d.order_id}">
                                 <input type="hidden" name="customer_name" value="${d.customer_name}">
                                 <input type="hidden" name="customer_mobile" value="${d.customer_mobile}">
                                 <input type="hidden" name="customer_email" value="${d.customer_email}">
-                                <input type="hidden" name="order_type" value="${d.order_type}">
-                                <input type="hidden" name="order_date" value="${d.order_date}">
-                                <input type="hidden" name="order_time" value="${d.order_time}">
-                                <input type="hidden" name="order_summary" value="${d.order_summary}">
-                                
-                                <!-- Constructed Message Body -->
                                 <textarea name="message" class="hidden">Order #${d.order_id}
 --------------------------------
 CUSTOMER
@@ -768,10 +804,7 @@ ${d.order_summary}
 --------------------------------
 TOTAL: ₱${state.totalAmount.toLocaleString()}
                                 </textarea>
-
-                                <button type="submit" id="finalSubmitBtn" class="w-full py-4 bg-purple-oven text-white font-bold text-lg rounded-full hover:bg-indigo-800 transition shadow-lg">
-                                    Confirm Payment & Send Order
-                                </button>
+                                <button type="submit" id="finalSubmitBtn" class="w-full py-4 bg-purple-oven text-white font-bold text-lg rounded-full hover:bg-indigo-800 transition shadow-lg">Confirm Payment & Send Order</button>
                             </form>
                         </div>
                     </div>
@@ -786,7 +819,6 @@ TOTAL: ₱${state.totalAmount.toLocaleString()}
                 </div>
             `;
 
-            // Debug display for file selection
             const fInput = document.getElementById('fileInput');
             const fInfo = document.getElementById('fileInfo');
             fInput.addEventListener('change', (e) => {
@@ -801,59 +833,37 @@ TOTAL: ₱${state.totalAmount.toLocaleString()}
                     fInfo.classList.add('hidden');
                 }
             });
-
             document.getElementById('paymentForm').onsubmit = handleFinalSubmission;
         }
 
-        // --- STEP 3: FINAL SUBMIT (Strict Mode) ---
         async function handleFinalSubmission(e) {
             e.preventDefault();
             if (state.isSubmitting) return;
 
             const btn = document.getElementById('finalSubmitBtn');
-            const form = document.getElementById('paymentForm'); // Explicit selection
+            const form = document.getElementById('paymentForm');
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
 
-            // --- SIZE CHECK ---
             if (file && file.size > 2 * 1024 * 1024) {
-                const proceed = confirm(
-                    "⚠️ The image is too large (over 2MB) and will likely fail to send.\n\n" +
-                    "• OK: Send order WITHOUT the image (please send proof via Viber/Email later).\n" +
-                    "• Cancel: Go back and select a smaller file (e.g., a screenshot)."
-                );
-
+                const proceed = confirm("⚠️ The image is too large (over 2MB). OK to send without image, Cancel to pick smaller file.");
                 if (!proceed) return;
-
-                // Clear input to send text-only safely
                 fileInput.value = ""; 
-                form.message.value += "\n\n[SYSTEM NOTE]: User attempted to upload a large file. Image was skipped. Please verify proof via Viber.";
+                form.message.value += "\n\n[SYSTEM NOTE]: Image skipped (too large).";
             }
 
             state.isSubmitting = true;
             document.getElementById('loadingOverlay').classList.remove('hidden');
             btn.disabled = true;
 
-            const d = state.pendingOrderData;
-
             try {
-                // PASSING THE ID STRING '#paymentForm' IS OFTEN MORE ROBUST THAN THE ELEMENT
                 await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, '#paymentForm');
-                
-                state.lastOrderDetails = d;
+                state.lastOrderDetails = state.pendingOrderData;
                 state.view = 'success';
                 render();
             } catch (err) {
-                console.error("Submission failed:", err);
-                
-                let errorMsg = "Failed to send order.";
-                if (err.text && err.text.includes("limit")) {
-                     errorMsg += " File size may still be too large.";
-                } else {
-                     errorMsg += " Please check your internet connection.";
-                }
-                
-                alert(errorMsg);
+                console.error(err);
+                alert("Failed to send order. Please check connection.");
             } finally {
                 state.isSubmitting = false;
                 document.getElementById('loadingOverlay').classList.add('hidden');
@@ -869,7 +879,7 @@ TOTAL: ₱${state.totalAmount.toLocaleString()}
                     </div>
                     <h2 class="text-3xl font-bold mb-2">Order Sent!</h2>
                     <p class="text-purple-oven font-bold text-xl mb-4">Order #${state.lastOrderDetails.order_id}</p>
-                    <p class="text-lg text-gray-600 mb-8">We have received your order and proof of payment. Expect a call from us before 6pm to confirm. Thank you.</p>
+                    <p class="text-lg text-gray-600 mb-8">We have received your order. Expect a call from us before 6pm to confirm.</p>
                     <button onclick="showLanding()" class="px-10 py-3 bg-purple-oven text-white font-medium rounded-full hover:bg-indigo-700 transition shadow-lg">Return to Home</button>
                 </div>
             `;
