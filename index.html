@@ -51,17 +51,56 @@
                     <h3 class="text-xl font-bold mb-6 text-purple-oven flex items-center gap-2">
                         Locations & Hours
                     </h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-sm">
-                        <div>
-                            <p class="font-bold text-gray-800 mb-2 border-b border-gray-300 pb-1">Metro Manila 8AM – 9PM</p>
-                            <div class="space-y-3">
-                                <p class="font-semibold text-purple-oven">Pasig, Makati, Quezon City, Alabang, San Juan</p>
-                                <p class="text-xs text-gray-500">Check Google Maps for exact branch locations.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm lg:pr-8">
+                        <div class="sm:col-span-2">
+                            <p class="font-bold text-gray-800 mb-2 border-b border-gray-300 pb-1">Metro Manila</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="space-y-3">
+                                    <p class="text-xs font-bold text-gray-500 mb-1 border-b border-gray-100 pb-1">8AM – 9PM</p>
+                                    <div>
+                                        <p class="font-semibold text-purple-oven">Pasig</p>
+                                        <p class="text-xs text-gray-600 pl-2">- Portico</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-purple-oven">Makati</p>
+                                        <p class="text-xs text-gray-600 pl-2">- San Antonio Plaza Arcade</p>
+                                        <p class="text-xs text-gray-600 pl-2">- Legaspi Street</p>
+                                        <p class="text-xs text-gray-600 pl-2">- Sacred Heart Street</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-purple-oven">Quezon City</p>
+                                        <p class="text-xs text-gray-600 pl-2">- Temple Drive</p>
+                                        <p class="text-xs text-gray-600 pl-2">- Scout Rallos</p>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-purple-oven">Alabang</p>
+                                        <p class="text-xs text-gray-600 pl-2">- Alabang Town Center</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3">
+                                    <p class="text-xs font-bold text-gray-500 mb-1 border-b border-gray-100 pb-1">Mon-Fri 11AM – 9PM / Sat-Sun 10AM – 9PM</p>
+                                    <div>
+                                        <p class="font-semibold text-purple-oven">San Juan</p>
+                                        <p class="text-xs text-gray-600 pl-2">- Santolan Town Plaza</p>
+                                    </div>
+                                </div>
                             </div>
+                            <p class="text-xs text-gray-500 italic mt-4">
+                                <a href="https://www.google.com/maps/search/Purple+Oven+Metro+Manila+Laguna" target="_blank" class="hover:underline hover:text-purple-oven transition-colors flex items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                    Check Google Maps for exact branch locations.
+                                </a>
+                            </p>
                         </div>
                         <div>
-                            <p class="font-bold text-gray-800 mb-2 border-b border-gray-300 pb-1">Laguna 9AM – 9PM</p>
-                            <p>Santa Rosa</p>
+                            <p class="font-bold text-gray-800 mb-2 border-b border-gray-300 pb-1">Laguna</p>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="font-semibold text-purple-oven">Santa Rosa</p>
+                                    <p class="text-xs text-gray-600">Mon-Fri: 11AM – 9PM</p>
+                                    <p class="text-xs text-gray-600">Sat-Sun: 10AM – 9PM</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,7 +295,10 @@
         ];
 
         const pickUpLocations = ['Pasig - Portico', 'Makati - San Antonio Plaza Arcade', 'Makati - Legaspi Street', 'Makati - Sacred Heart Street', 'Quezon City - Temple Drive', 'Quezon City - Scout Rallos', 'Alabang - Alabang Town Center', 'San Juan - Santolan Town Plaza', 'Laguna - Santa Rosa'];
-        const timeSlots = Array.from({ length: 11 }, (_, i) => `${(i + 9) % 12 === 0 ? 12 : (i + 9) % 12} ${i + 9 < 12 ? 'AM' : 'PM'}`).slice(0, 11);
+        
+        // Time slot arrays
+        const timeSlotsMM = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM'];
+        const timeSlotsSJSR = ['11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM'];
 
         // --- App Loop ---
         function render() {
@@ -360,7 +402,9 @@
                                 </div>
                                 <div class="form-grid">
                                     <input type="text" id="datePicker" name="orderDate" placeholder="Date *" required class="p-3 border rounded-lg bg-white">
-                                    <select name="orderTime" required class="p-3 border rounded-lg"><option value="" disabled selected>Time...</option>${timeSlots.map(t => `<option value="${t}">${t}</option>`).join('')}</select>
+                                    <select name="orderTime" id="timeSelect" required class="p-3 border rounded-lg">
+                                        <option value="" disabled selected>Time...</option>
+                                    </select>
                                 </div>
                             </div>
                             
@@ -413,6 +457,27 @@
             const giftContainer = document.getElementById('giftContainer');
             const giftToggle = document.getElementById('giftToggle');
             const giftFields = document.getElementById('giftFields');
+            const timeSelect = document.getElementById('timeSelect');
+
+            function updateTimeSlots() {
+                const isDelivery = document.querySelector('input[name="orderType"]:checked').value === 'Delivery';
+                const branch = pickup.value || '';
+                
+                let slots = timeSlotsMM;
+                if (!isDelivery && (branch.includes('San Juan') || branch.includes('Santa Rosa'))) {
+                    slots = timeSlotsSJSR;
+                }
+                
+                const currentVal = timeSelect.value;
+                timeSelect.innerHTML = `<option value="" disabled ${currentVal ? '' : 'selected'}>Time...</option>` + 
+                    slots.map(t => `<option value="${t}" ${currentVal === t ? 'selected' : ''}>${t}</option>`).join('');
+                
+                if (currentVal && !slots.includes(currentVal)) {
+                    timeSelect.value = "";
+                }
+            }
+
+            pickup.addEventListener('change', updateTimeSlots);
 
             // --- Delivery Logic ---
             form.querySelectorAll('input[name="orderType"]').forEach(r => {
@@ -429,6 +494,8 @@
                         giftToggle.checked = false;
                         giftFields.classList.add('hidden');
                     }
+
+                    updateTimeSlots();
                 };
             });
             giftToggle.onchange = (e) => giftFields.classList.toggle('hidden', !e.target.checked);
@@ -575,6 +642,7 @@
             });
 
             calculateTotal(); // Init
+            updateTimeSlots(); // Init time slots
             initDatePicker();
             form.onsubmit = proceedToPayment;
         }
@@ -647,11 +715,23 @@
                 dateFormat: "Y-m-d",
                 disable: [
                     function(date) {
+                        // Original Holidays
                         if ((date.getMonth() === 11 && date.getDate() === 25) || (date.getMonth() === 11 && date.getDate() === 26) || (date.getMonth() === 11 && date.getDate() === 31) || (date.getMonth() === 0 && date.getDate() === 1)) return true;
                         if (date.getMonth() === 11 && date.getDate() === 24) {
                             if (hkTime.getMonth() === 11 && hkTime.getDate() === 23 && hkTime.getHours() >= 12) return true;
                             if (hkTime.getMonth() === 11 && hkTime.getDate() >= 24) return true;
                         }
+                        
+                        // NEW: Block April 2 and April 3
+                        if (date.getMonth() === 3 && (date.getDate() === 2 || date.getDate() === 3)) return true;
+                        
+                        // NEW: Block April 4 if past April 1st, 3:00 PM (HK Time)
+                        const isPastApr1_3pm = (hkTime.getMonth() === 3 && hkTime.getDate() === 1 && hkTime.getHours() >= 15) || 
+                                               (hkTime.getMonth() === 3 && hkTime.getDate() > 1) || 
+                                               (hkTime.getMonth() > 3);
+                        
+                        if (date.getMonth() === 3 && date.getDate() === 4 && isPastApr1_3pm) return true;
+
                         return false;
                     }
                 ]
