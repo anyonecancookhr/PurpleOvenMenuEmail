@@ -829,8 +829,14 @@
 
             let minDateObj = new Date(pTime);
             
-            // Earliest available date is Tomorrow. Specific lead time routing is handled on submission.
-            minDateObj.setDate(minDateObj.getDate() + 1);
+            // Earliest available date in the calendar:
+            // Before 3 PM: tomorrow
+            // After 3 PM: day after tomorrow
+            if (hkTime.getHours() < 15) {
+                minDateObj.setDate(minDateObj.getDate() + 1);
+            } else {
+                minDateObj.setDate(minDateObj.getDate() + 2);
+            }
 
             while (isClosedDay(minDateObj)) {
                 minDateObj.setDate(minDateObj.getDate() + 1);
@@ -846,7 +852,11 @@
                 }
             }
 
-            const minDateStr = minDateObj.toISOString().split('T')[0];
+            // Construct YYYY-MM-DD manually to prevent UTC timezone shift bugs
+            const minYear = minDateObj.getFullYear();
+            const minMonth = String(minDateObj.getMonth() + 1).padStart(2, '0');
+            const minDay = String(minDateObj.getDate()).padStart(2, '0');
+            const minDateStr = `${minYear}-${minMonth}-${minDay}`;
 
             flatpickr("#datePicker", { 
                 minDate: minDateStr, 
